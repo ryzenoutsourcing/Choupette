@@ -1,0 +1,2361 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Choupette | Master-level Automotive Platform</title>
+  <meta name="description" content="Choupette – Keuring, Diagnose, Overname, Import/Export en Takelwagen. Gecertificeerde voertuigen met mastergarantie.">
+  
+  <!-- FONTS & ICONS -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <style>
+    /* ============================================================ */
+    /* 1. DESIGN SYSTEM (VARIABLES & RESET)                        */
+    /* ============================================================ */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      /* Kleuren - Gold & Deep Blue Thema */
+      --deep-black: #0A0F1D;
+      --vibrant-blue: #C5A059;
+      --pure-white: #ffffff;
+      --off-white: #F4F5F7;
+      --gray-light: #eaeaea;
+      --gray-mid: #888888;
+      
+      /* Schaduwen */
+      --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.03);
+      --shadow-md: 0 10px 35px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      --shadow-float: 0 20px 40px -12px rgba(197, 160, 89, 0.25);
+      
+      /* Typografie */
+      --font-sans: 'Inter', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      
+      /* Layout */
+      --container-max: 1280px;
+      --container-padding: 32px;
+    }
+    
+    /* CARBON FIBER ACHTERGRONDPATROON - Technisch & Snel */
+    body {
+      font-family: var(--font-sans);
+      background-color: #ffffff;
+      color: var(--deep-black);
+      line-height: 1.5;
+      overflow-x: hidden;
+      
+      /* Carbon fiber effect - high-end sportieve look */
+      background-image: linear-gradient(45deg, #f0f0f0 25%, transparent 25%, transparent 75%, #f0f0f0 75%, #f0f0f0), 
+                        linear-gradient(45deg, #f0f0f0 25%, transparent 25%, transparent 75%, #f0f0f0 75%, #f0f0f0);
+      background-size: 20px 20px;
+      background-position: 0 0, 10px 10px;
+    }
+    
+    h1, h2, h3 { font-family: var(--font-serif); }
+    
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 var(--container-padding);
+    }
+    
+    /* ============================================================ */
+    /* 2. HEADER & NAVIGATION                                      */
+    /* ============================================================ */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-light);
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem 0;
+    }
+    
+    .logo {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 800;
+      text-decoration: none;
+      color: var(--deep-black);
+    }
+    
+    /* ============================================================ */
+    /* 3. HERO SECTIE                                              */
+    /* ============================================================ */
+    .hero {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      background-image: url('Gemini_Generated_Image_f8zitff8zitff8zi.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    
+    @media (min-width: 769px) { .hero { background-attachment: fixed; } }
+    @media (max-width: 768px) { .hero { background-position: 70% center; background-attachment: scroll; min-height: 70vh; text-align: center; } }
+    @media (max-width: 480px) { .hero { background-position: 75% center; } }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 1;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+    
+    @media (max-width: 768px) { .hero-content { max-width: 100%; } }
+    
+    .hero-content h1 {
+      font-size: 4.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      color: #ffffff;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    @media (max-width: 768px) { .hero-content h1 { font-size: 2.2rem; } }
+    @media (max-width: 480px) { .hero-content h1 { font-size: 1.8rem; } }
+    
+    .hero-accent { color: var(--vibrant-blue); }
+    .hero-content p { color: rgba(255, 255, 255, 0.9); text-shadow: 1px 1px 2px rgba(0,0,0,0.3); margin-top: 1.5rem; }
+    
+    /* ============================================================ */
+    /* 4. MENU GRID (Asymmetrische vleugel-vorm)                    */
+    /* ============================================================ */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0 3rem 0;
+    }
+    
+    @media (max-width: 768px) { .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; } }
+    @media (max-width: 480px) { .menu-grid { grid-template-columns: 1fr; } }
+    
+    .menu-item {
+      background: var(--pure-white);
+      border: 1px solid var(--gray-light);
+      border-radius: 0px 24px 0px 24px;
+      padding: 1.5rem 0.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* HOVER-ANIMATIE: "The Reveal" - Lichtstraal effect */
+    .menu-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: left 0.5s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+    
+    .menu-item:hover::before {
+      left: 100%;
+    }
+    
+    @media (max-width: 768px) { .menu-item { padding: 1rem 0.3rem; } }
+    
+    .menu-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--vibrant-blue);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .menu-item:hover {
+      transform: translateY(-5px);
+      border-color: var(--vibrant-blue);
+    }
+    
+    .menu-item:hover::after { transform: scaleX(1); }
+    
+    .menu-icon {
+      font-size: 1.8rem;
+      color: var(--vibrant-blue);
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    
+    @media (max-width: 768px) { .menu-icon { font-size: 1.4rem; } }
+    
+    .menu-item h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      position: relative;
+      z-index: 2;
+    }
+    
+    @media (max-width: 768px) { .menu-item h4 { font-size: 0.85rem; } }
+    
+    .menu-item p {
+      font-size: 0.7rem;
+      color: var(--gray-mid);
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* ============================================================ */
+    /* 5. KNOP "BEKIJK ONZE VLOOT"                                  */
+    /* ============================================================ */
+    .fleet-btn-container {
+      text-align: center;
+      margin-top: -2rem;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 5;
+    }
+    
+    .fleet-btn {
+      background: var(--vibrant-blue);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-md);
+      cursor: pointer;
+      border: none;
+      font-size: 1rem;
+    }
+    
+    .fleet-btn:hover {
+      background: #a8884a;
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    /* ============================================================ */
+    /* 6. SECTIE-OVERGANGEN (Slanted/Curved shapes)                 */
+    /* ============================================================ */
+    .section {
+      padding: 5rem 0;
+      clip-path: polygon(0 5%, 100% 0%, 100% 95%, 0% 100%);
+      margin: -1px 0;
+      position: relative;
+      z-index: 1;
+    }
+    
+    @media (max-width: 768px) { 
+      .section { 
+        padding: 3rem 0;
+        clip-path: polygon(0 2%, 100% 0%, 100% 98%, 0% 100%);
+      } 
+    }
+    
+    .section:first-of-type {
+      clip-path: polygon(0 0, 100% 0%, 100% 95%, 0% 100%);
+    }
+    
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      letter-spacing: -1px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+      position: relative;
+      display: inline-block;
+    }
+    
+    @media (max-width: 992px) { .section-title { font-size: 2rem; } }
+    @media (max-width: 768px) { .section-title { font-size: 1.8rem; } }
+    @media (max-width: 480px) { .section-title { font-size: 1.5rem; } }
+    
+    /* ID SECTIES: ZWEVENDE "FLOATING CARDS" */
+    .section p {
+      background: var(--pure-white);
+      padding: 2rem;
+      border-radius: 40px 5px;
+      box-shadow: 0 15px 35px -12px rgba(197, 160, 89, 0.2);
+      max-width: 800px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .section p:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 40px -12px rgba(197, 160, 89, 0.3);
+    }
+    
+    #over-ons p {
+      background: var(--pure-white);
+      border-radius: 40px 5px;
+      padding: 2rem;
+    }
+    
+    /* ============================================================ */
+    /* 7. SIDE-PANEL (Off-canvas menu)                              */
+    /* ============================================================ */
+    .side-panel {
+      position: fixed;
+      top: 0;
+      right: -500px;
+      width: 450px;
+      max-width: 95%;
+      height: 100vh;
+      background: var(--pure-white);
+      box-shadow: var(--shadow-lg);
+      z-index: 2600;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .side-panel.open { transform: translateX(-500px); }
+    @media (max-width: 768px) { .side-panel { width: 100%; right: -100%; }
+    .side-panel.open { transform: translateX(-100%); } }
+    
+    .side-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      z-index: 2500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    
+    .side-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .side-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--gray-light);
+      background: var(--pure-white);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    .side-panel-header h3 { margin: 0; font-size: 1.3rem; }
+    
+    .side-panel-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+    }
+    
+    .side-vehicle-card {
+      background: var(--off-white);
+      border-radius: 16px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid var(--gray-light);
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    
+    .side-vehicle-card:hover {
+      border-color: var(--vibrant-blue);
+      background: white;
+      transform: translateX(-4px);
+    }
+    
+    .side-vehicle-img {
+      width: 80px;
+      height: 60px;
+      background: var(--gray-light);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    
+    .side-vehicle-info { flex: 1; }
+    .side-vehicle-name { font-weight: 700; font-size: 1rem; }
+    .side-vehicle-price { color: var(--vibrant-blue); font-weight: 700; margin-top: 0.25rem; }
+    .side-vehicle-specs { font-size: 0.7rem; color: var(--gray-mid); margin-top: 0.25rem; }
+    
+    .side-pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border-top: 1px solid var(--gray-light);
+      background: var(--pure-white);
+    }
+    
+    .side-pagination .pagination-btn {
+      background: var(--pure-white);
+      border: 1px solid var(--gray-light);
+      border-radius: 40px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .side-pagination .pagination-btn:hover:not(:disabled) {
+      background: var(--vibrant-blue);
+      color: white;
+      border-color: var(--vibrant-blue);
+    }
+    
+    .side-pagination .pagination-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .side-pagination .pagination-info { font-size: 0.8rem; color: var(--gray-mid); }
+    
+    /* ============================================================ */
+    /* 8. CHOUPETTE ESTIMATOR WIDGET                                */
+    /* ============================================================ */
+    #choupette-ai-widget {
+      --c-primary: var(--vibrant-blue);
+      --c-primary-dark: #a8884a;
+      --c-primary-light: rgba(197, 160, 89, 0.15);
+      --c-bg-glass: rgba(248, 248, 248, 0.95);
+      --c-border-glass: rgba(0, 0, 0, 0.08);
+      --c-card-bg: #ffffff;
+      
+      max-width: 620px;
+      width: 100%;
+      margin: 2rem auto 3rem auto;
+      border-radius: 32px;
+      background: var(--off-white);
+      box-shadow: var(--shadow-md);
+      padding: 0;
+    }
+    
+    #choupette-ai-widget .widget-card {
+      background: var(--pure-white);
+      border-radius: 28px;
+      padding: 1.8rem 1.5rem;
+      border: 1px solid var(--gray-light);
+    }
+    
+    @media (max-width: 560px) { #choupette-ai-widget .widget-card { padding: 1.2rem; } }
+    
+    #choupette-ai-widget h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--deep-black);
+      margin-bottom: 0.3rem;
+    }
+    
+    #choupette-ai-widget .sub {
+      color: var(--gray-mid);
+      font-size: 0.85rem;
+      margin-bottom: 1.8rem;
+      border-left: 3px solid var(--vibrant-blue);
+      padding-left: 12px;
+    }
+    
+    #choupette-ai-widget .form-group {
+      margin-bottom: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    #choupette-ai-widget label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--deep-black);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    #choupette-ai-widget select, 
+    #choupette-ai-widget input {
+      background: var(--off-white);
+      border: 1px solid var(--gray-light);
+      border-radius: 20px;
+      padding: 14px 18px;
+      font-size: 1rem;
+      color: var(--deep-black);
+      outline: none;
+      font-weight: 500;
+    }
+    
+    #choupette-ai-widget select:focus, 
+    #choupette-ai-widget input:focus {
+      border-color: var(--vibrant-blue);
+      box-shadow: 0 0 0 3px var(--c-primary-light);
+    }
+    
+    #choupette-ai-widget .row-2cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    
+    @media (max-width: 560px) { #choupette-ai-widget .row-2cols { grid-template-columns: 1fr; gap: 0.8rem; } }
+    
+    #choupette-ai-widget .btn-primary {
+      background: var(--vibrant-blue);
+      width: 100%;
+      padding: 16px 12px;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: var(--shadow-sm);
+      margin-top: 12px;
+      border: none;
+    }
+    
+    #choupette-ai-widget .btn-primary:hover {
+      background: #a8884a;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    #choupette-ai-widget .ai-scan-overlay {
+      background: var(--off-white);
+      border-radius: 28px;
+      padding: 2rem;
+      text-align: center;
+      margin-top: 1rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--gray-light);
+    }
+    
+    #choupette-ai-widget .scan-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--vibrant-blue), transparent);
+      animation: scanMove 1.8s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+      box-shadow: 0 0 12px var(--vibrant-blue);
+    }
+    
+    @keyframes scanMove {
+      0% { top: 0%; opacity: 0.7; }
+      50% { top: 95%; opacity: 1; }
+      100% { top: 0%; opacity: 0.7; }
+    }
+    
+    #choupette-ai-widget .ai-text {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--vibrant-blue);
+      margin-bottom: 0.8rem;
+    }
+    
+    #choupette-ai-widget .scan-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0 10px;
+    }
+    
+    #choupette-ai-widget .dot {
+      width: 9px;
+      height: 9px;
+      background: var(--vibrant-blue);
+      border-radius: 50%;
+      animation: pulse 1.1s infinite ease;
+    }
+    
+    #choupette-ai-widget .dot:nth-child(2) { animation-delay: 0.2s; }
+    #choupette-ai-widget .dot:nth-child(3) { animation-delay: 0.4s; }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: scale(0.8);}
+      50% { opacity: 1; transform: scale(1.2); background: var(--vibrant-blue);}
+    }
+    
+    #choupette-ai-widget .result-box {
+      background: linear-gradient(135deg, var(--off-white), #ffffff);
+      border-radius: 32px;
+      padding: 1.6rem;
+      margin-top: 1.2rem;
+      text-align: center;
+      border: 1px solid var(--gray-light);
+    }
+    
+    #choupette-ai-widget .estimate-price {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--vibrant-blue);
+      margin: 10px 0;
+    }
+    
+    @media (max-width: 560px) { #choupette-ai-widget .estimate-price { font-size: 2rem; } }
+    
+    #choupette-ai-widget .car-detail-summary {
+      font-size: 0.9rem;
+      color: var(--gray-mid);
+      margin: 1rem 0 0.8rem;
+    }
+    
+    #choupette-ai-widget .whatsapp-btn {
+      background: #25D366;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 14px 24px;
+      border-radius: 48px;
+      font-weight: bold;
+      font-size: 1rem;
+      width: 100%;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 16px;
+    }
+    
+    #choupette-ai-widget .whatsapp-btn:hover {
+      background: #20b859;
+      transform: scale(0.98);
+    }
+    
+    #choupette-ai-widget .error-message {
+      background: rgba(255, 70, 70, 0.1);
+      border-left: 4px solid #ff5a5a;
+      padding: 10px;
+      border-radius: 16px;
+      margin: 10px 0;
+      font-size: 0.85rem;
+      color: #cc0000;
+    }
+    
+    /* ============================================================ */
+    /* 9. CONTACT FORM - "LIQUID GLASS" LOOK                        */
+    /* ============================================================ */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(15px);
+      border-radius: 80px 20px 80px 20px;
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      padding: 2rem;
+      transition: all 0.3s ease;
+    }
+    
+    @media (max-width: 768px) { 
+      .form-grid { 
+        grid-template-columns: 1fr; 
+        padding: 1.5rem;
+        border-radius: 50px 15px 50px 15px;
+      } 
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid rgba(197, 160, 89, 0.3);
+      border-radius: 0px;
+      padding: 12px 0 8px 0;
+      font-size: 1rem;
+      color: var(--deep-black);
+      outline: none;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-bottom-color: var(--vibrant-blue);
+      box-shadow: none;
+    }
+    
+    .form-group label {
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+      color: var(--deep-black);
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+    
+    .form-group { display: flex; flex-direction: column; }
+    .form-group.full-width { grid-column: span 2; }
+    @media (max-width: 768px) { .form-group.full-width { grid-column: span 1; } }
+    
+    .submit-btn {
+      background: var(--vibrant-blue);
+      color: white;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      width: fit-content;
+    }
+    
+    .submit-btn:hover {
+      background: #a8884a;
+      transform: translateY(-2px);
+    }
+    
+    @media (max-width: 480px) { .submit-btn { width: 100%; text-align: center; } }
+    
+    .form-buttons-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      grid-column: span 2;
+    }
+    
+    @media (max-width: 768px) { .form-buttons-row { grid-column: span 1; flex-direction: column; } }
+    
+    .form-buttons-row .submit-btn,
+    .form-buttons-row .whatsapp-contact-btn {
+      flex: 1;
+      min-width: 180px;
+      text-align: center;
+      justify-content: center;
+    }
+    
+    @media (max-width: 768px) { .form-buttons-row .submit-btn,
+    .form-buttons-row .whatsapp-contact-btn { width: 100%; } }
+    
+    .whatsapp-contact-btn {
+      background: #25D366;
+      color: white;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+    
+    .whatsapp-contact-btn:hover {
+      background: #20b859;
+      transform: translateY(-2px);
+    }
+    
+    .form-feedback { margin-top: 0.5rem; }
+    
+    /* ============================================================ */
+    /* 10. MODAL COMPONENT (Galerij)                                */
+    /* ============================================================ */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 3000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal.active { display: flex; }
+    
+    .modal-content {
+      background: var(--pure-white);
+      width: 90%;
+      max-width: 1100px;
+      max-height: 85vh;
+      border-radius: 32px;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: var(--shadow-lg);
+    }
+    
+    @media (max-width: 768px) { .modal-content { width: 95%; } }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--gray-light);
+      background: var(--pure-white);
+      position: sticky;
+      top: 0;
+      z-index: 15;
+    }
+    
+    @media (max-width: 768px) { .modal-header { padding: 0.75rem 1rem; } }
+    
+    .contact-seller-btn {
+      background: var(--vibrant-blue);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .contact-seller-btn:hover {
+      background: #a8884a;
+      transform: scale(0.98);
+    }
+    
+    @media (max-width: 768px) { .contact-seller-btn { padding: 0.4rem 0.8rem; font-size: 0.8rem; } }
+    
+    .modal-close {
+      font-size: 1.8rem;
+      cursor: pointer;
+      background: var(--off-white);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-close:hover { background: var(--gray-light); }
+    
+    .gallery-container {
+      background: var(--deep-black);
+      padding: 2rem;
+    }
+    
+    @media (max-width: 768px) { .gallery-container { padding: 1rem; } }
+    
+    .main-image-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .main-image {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+    
+    @media (max-width: 768px) { .main-image { height: 250px; } }
+    @media (max-width: 480px) { .main-image { height: 200px; } }
+    
+    .gallery-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    
+    .gallery-nav:hover { background: var(--vibrant-blue); }
+    .gallery-nav.prev { left: 10px; }
+    .gallery-nav.next { right: 10px; }
+    
+    .thumbnail-strip {
+      display: flex;
+      gap: 0.8rem;
+      overflow-x: auto;
+      padding: 1rem 0;
+      margin-top: 1rem;
+    }
+    
+    .thumbnail {
+      width: 80px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 12px;
+      cursor: pointer;
+      opacity: 0.6;
+    }
+    
+    @media (max-width: 768px) { .thumbnail { width: 60px; height: 45px; } }
+    
+    .thumbnail.active-thumb {
+      opacity: 1;
+      border: 2px solid var(--vibrant-blue);
+    }
+    
+    .car-detail-info { padding: 2rem; }
+    
+    .admin-finance-card {
+      background: var(--off-white);
+      border-radius: 24px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      display: none;
+      border-left: 4px solid var(--vibrant-blue);
+    }
+    
+    .admin-finance-card.visible { display: block; }
+    
+    /* ============================================================ */
+    /* 11. FOOTER                                                  */
+    /* ============================================================ */
+    footer {
+      background: var(--deep-black);
+      color: var(--gray-mid);
+      padding: 3rem 0 2rem;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr; text-align: center; } }
+    
+    .footer-col h4 {
+      color: white;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+    
+    .footer-col p, .footer-col a {
+      color: var(--gray-mid);
+      text-decoration: none;
+      line-height: 1.8;
+    }
+    
+    .footer-col a:hover { color: var(--vibrant-blue); }
+    
+    .social-icons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    @media (max-width: 768px) { .social-icons { justify-content: center; } }
+    
+    .social-icons a { font-size: 1.4rem; color: var(--gray-mid); }
+    .social-icons a:hover { color: var(--vibrant-blue); }
+    
+    .qr-code {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    
+    .qr-code img {
+      width: 100px;
+      height: 100px;
+      background: white;
+      padding: 8px;
+      border-radius: 12px;
+      margin-bottom: 0.5rem;
+    }
+    
+    @media (max-width: 768px) { .qr-code img { width: 80px; height: 80px; } }
+    
+    .qr-code p { font-size: 0.7rem; color: var(--gray-mid); }
+    
+    .copyright {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid #222;
+      font-size: 0.8rem;
+    }
+    
+    /* ============================================================ */
+    /* 12. ADMIN PANEL (ORIGINEEL - NIET AANGEPAST)                 */
+    /* ============================================================ */
+    .admin-panel {
+      background: #F8F9FA;
+      border-top: 1px solid #EAEAEA;
+      display: none;
+    }
+    
+    .admin-menu {
+      position: sticky;
+      top: 73px;
+      z-index: 999;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #EAEAEA;
+    }
+    
+    .admin-tabs {
+      display: flex;
+      gap: 2rem;
+      padding: 1rem 0;
+      list-style: none;
+    }
+    
+    .admin-tab-btn {
+      background: none;
+      border: none;
+      padding: 0.5rem 0;
+      font-weight: 500;
+      color: #4A5568;
+      cursor: pointer;
+    }
+    
+    .admin-tab-btn:hover { color: var(--vibrant-blue); }
+    .admin-tab-btn.active { color: var(--vibrant-blue); }
+    .admin-tab-btn.active::after {
+      content: '';
+      display: block;
+      height: 3px;
+      background: var(--vibrant-blue);
+      margin-top: 4px;
+    }
+    
+    .admin-tab-content {
+      display: none;
+      padding: 2rem 0;
+    }
+    .admin-tab-content.active { display: block; }
+    
+    .admin-card {
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      border-radius: 20px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .admin-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #EAEAEA;
+    }
+    
+    .logout-btn {
+      background: #EF4444;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .upload-zone {
+      border: 2px dashed #EAEAEA;
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      background: #F8F9FA;
+    }
+    
+    .upload-zone:hover {
+      border-color: var(--vibrant-blue);
+      background: rgba(197, 160, 89, 0.02);
+    }
+    
+    .vehicles-admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    @media (max-width: 768px) { .vehicles-admin-grid { grid-template-columns: 1fr; } }
+    
+    .vehicle-admin-card {
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      border-radius: 16px;
+      padding: 1rem;
+      position: relative;
+    }
+    
+    .vehicle-select-checkbox {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      z-index: 10;
+    }
+    
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .btn-sm {
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      border: none;
+    }
+    
+    .btn-edit { background: #F8F9FA; color: var(--vibrant-blue); border: 1px solid #EAEAEA; }
+    .btn-edit:hover { background: var(--vibrant-blue); color: white; }
+    .btn-delete { background: #F8F9FA; color: #EF4444; border: 1px solid #EAEAEA; }
+    .btn-delete:hover { background: #EF4444; color: white; }
+    .btn-sold { background: #10B981; color: white; }
+    .btn-sold:hover { background: #0b8f5e; }
+    
+    .btn-whatsapp {
+      background: #25D366;
+      color: white;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+    }
+    
+    .btn-whatsapp:hover { background: #128C7E; }
+    
+    .btn-bulk-whatsapp {
+      background: #075E54;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-left: 1rem;
+    }
+    
+    .select-all-btn {
+      background: var(--vibrant-blue);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    
+    .admin-pagination-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #EAEAEA;
+    }
+    
+    .admin-pagination-btn {
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      border-radius: 8px;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+    }
+    
+    .admin-pagination-btn:hover:not(:disabled) {
+      background: var(--vibrant-blue);
+      color: white;
+      border-color: var(--vibrant-blue);
+    }
+    
+    .admin-pagination-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .admin-pagination-info { font-size: 0.8rem; color: #4A5568; }
+    
+    .selection-bar {
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .finance-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    @media (max-width: 768px) { .finance-grid { grid-template-columns: 1fr; } }
+    
+    .finance-card {
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      border-radius: 20px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    
+    .finance-card h3 { font-size: 0.9rem; color: #4A5568; margin-bottom: 0.5rem; }
+    .finance-amount { font-size: 1.8rem; font-weight: 700; color: var(--vibrant-blue); }
+    
+    .report-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    
+    .report-table th, .report-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #EAEAEA;
+    }
+    
+    .report-table th { background: #F8F9FA; font-weight: 600; color: #4A5568; }
+    
+    .filter-buttons { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    
+    .filter-btn {
+      padding: 0.4rem 1rem;
+      border: 1px solid #EAEAEA;
+      border-radius: 20px;
+      background: #FFFFFF;
+      cursor: pointer;
+    }
+    
+    .filter-btn.active { background: var(--vibrant-blue); color: white; border-color: var(--vibrant-blue); }
+    
+    .export-btn {
+      background: #10B981;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-bottom: 1rem;
+    }
+    
+    .sold-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 4000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .sold-modal.active { display: flex; }
+    
+    .sold-modal-content {
+      background: #FFFFFF;
+      border-radius: 24px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+    }
+    
+    /* ============================================================ */
+    /* 13. PAGINATION COMPONENT                                    */
+    /* ============================================================ */
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--gray-light);
+    }
+    
+    .pagination-btn {
+      background: var(--pure-white);
+      border: 1px solid var(--gray-light);
+      border-radius: 40px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    
+    .pagination-btn:hover:not(:disabled) {
+      background: var(--vibrant-blue);
+      color: white;
+      border-color: var(--vibrant-blue);
+    }
+    
+    .pagination-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .pagination-info { font-size: 0.8rem; color: var(--gray-mid); }
+    
+    /* ============================================================ */
+    /* 14. RESPONSIVE BREAKPOINTS                                  */
+    /* ============================================================ */
+    @media (max-width: 992px) { :root { --container-padding: 24px; } }
+  </style>
+</head>
+<body>
+
+<!-- HEADER (ALLEEN LOGO) -->
+<header class="site-header">
+  <div class="container">
+    <div class="navbar">
+      <a href="#" class="logo">Choupette</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- HERO SECTIE -->
+  <section id="home" class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Choupette <span class="hero-accent">Master-level</span><br>automotive excellence</h1>
+        <p>Keuring · Diagnose · Overname · Import/Export · Takelwagen · Alleen gecertificeerde meesterstukken.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- KNOP "BEKIJK ONZE VLOOT" -->
+  <div class="fleet-btn-container">
+    <button id="openFleetBtn" class="fleet-btn">
+      <i class="fas fa-car"></i> Bekijk onze vloot
+    </button>
+  </div>
+
+  <!-- SECTIE "OVER CHOUPETTE" -->
+  <section id="over-ons" class="section">
+    <div class="container">
+      <h2 class="section-title">Over Choupette</h2>
+      <p style="font-size: 1.1rem; max-width: 800px;">Sinds 2012 de master in premium tweedehands auto's. Transparantie, garantie en passie staan centraal. Elk voertuig doorloopt onze 113-punten mastercheck voordat het de showroom betreedt.</p>
+      <p style="margin-top: 1rem; color: var(--gray-mid);">Choupette is niet zomaar een autohandelaar — wij zijn uw partner in mobiliteit met een ongeëvenaard service niveau.</p>
+    </div>
+  </section>
+
+  <!-- MENU GRID (6 dienstenkaarten) -->
+  <div class="container">
+    <div class="menu-grid">
+      <div class="menu-item" data-target="keuring">
+        <div class="menu-icon"><i class="fas fa-clipboard-list"></i></div>
+        <h4>100% Gecertificeerd</h4>
+        <p>113-punten mastercheck</p>
+      </div>
+      <div class="menu-item" data-target="diagnose">
+        <div class="menu-icon"><i class="fas fa-microscope"></i></div>
+        <h4>Diagnose</h4>
+        <p>Computerdiagnose</p>
+      </div>
+      <div class="menu-item" data-target="overname">
+        <div class="menu-icon"><i class="fas fa-handshake"></i></div>
+        <h4>Beste Inruilprijs</h4>
+        <p>Eerlijke waardebepaling</p>
+      </div>
+      <div class="menu-item" data-target="import-export">
+        <div class="menu-icon"><i class="fas fa-globe"></i></div>
+        <h4>Import / Export</h4>
+        <p>Wereldwijd</p>
+      </div>
+      <div class="menu-item" data-target="takelwagen">
+        <div class="menu-icon"><i class="fas fa-truck"></i></div>
+        <h4>Takelwagen</h4>
+        <p>24/7 beschikbaar</p>
+      </div>
+      <div class="menu-item" data-target="contact-form">
+        <div class="menu-icon"><i class="fas fa-envelope"></i></div>
+        <h4>Testrit Aanvragen</h4>
+        <p>Neem contact op</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHOUPETTE ESTIMATOR (AI Car Valuation) -->
+  <div class="container">
+    <div id="choupette-ai-widget">
+      <div class="widget-card">
+        <h2>⚡ Choupette Estimator</h2>
+        <div class="sub">AI-gestuurde marktanalyse | AutoScout24-scan</div>
+        
+        <div id="choupette-form-step">
+          <div class="form-group">
+            <label><i class="fas fa-car" style="color: var(--vibrant-blue);"></i> Merk & Model</label>
+            <select id="car-model-select">
+              <option value="Audi A3">Audi A3</option>
+              <option value="BMW 3 Serie">BMW 3 Serie</option>
+              <option value="Mercedes C-Klasse">Mercedes C-Klasse</option>
+              <option value="Volkswagen Golf">Volkswagen Golf</option>
+              <option value="Tesla Model 3">Tesla Model 3</option>
+              <option value="Toyota Corolla">Toyota Corolla</option>
+              <option value="Ford Focus">Ford Focus</option>
+              <option value="Volvo XC60">Volvo XC60</option>
+            </select>
+          </div>
+          <div class="row-2cols">
+            <div class="form-group">
+              <label><i class="fas fa-calendar-alt" style="color: var(--vibrant-blue);"></i> Bouwjaar</label>
+              <input type="number" id="year-input" placeholder="bijv. 2019" value="2020" min="1995" max="2026">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-tachometer-alt" style="color: var(--vibrant-blue);"></i> Kilometerstand</label>
+              <input type="number" id="km-input" placeholder="km" value="85000">
+            </div>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-clipboard-check" style="color: var(--vibrant-blue);"></i> Staat</label>
+            <select id="condition-select">
+              <option value="excellent">🏆 Uitstekend (als nieuw)</option>
+              <option value="good">👍 Goed (normaal gebruik)</option>
+              <option value="used">🔄 Gebruikt (zichtbare slijtage)</option>
+            </select>
+          </div>
+          <button class="btn-primary" id="choupette-valuate-btn">🚀 Bereken marktwaarde</button>
+        </div>
+        
+        <div id="choupette-dynamic-area"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDE-PANEL (verborgen, schuift van rechts) -->
+  <div class="side-overlay" id="sideOverlay"></div>
+  <div class="side-panel" id="sidePanel">
+    <div class="side-panel-header">
+      <h3><i class="fas fa-car"></i> Direct Leverbaar</h3>
+      <div class="modal-close" id="closeSidePanel">&times;</div>
+    </div>
+    <div class="side-panel-content">
+      <div id="sideVehicleList"></div>
+    </div>
+    <div class="side-pagination">
+      <button class="pagination-btn" id="sidePrevBtn" disabled>← Vorige</button>
+      <span class="pagination-info" id="sidePageInfo">1 / 1</span>
+      <button class="pagination-btn" id="sideNextBtn">Volgende →</button>
+    </div>
+  </div>
+
+  <!-- DIENSTEN SECTIES (Keuring, Diagnose, Overname, etc.) -->
+  <section id="keuring" class="section">
+    <div class="container">
+      <h2 class="section-title">🔧 Keuring</h2>
+      <p>113-punten masterkeuring. Elk voertuig krijgt een uitgebreid digitaal rapport. Volledige transparantie vooraf.</p>
+    </div>
+  </section>
+
+  <section id="diagnose" class="section">
+    <div class="container">
+      <h2 class="section-title">📊 Diagnose</h2>
+      <p>Diepgaande computerdiagnose, motoranalyse en elektronische check. Alleen zo garanderen wij master-kwaliteit.</p>
+    </div>
+  </section>
+
+  <section id="overname" class="section">
+    <div class="container">
+      <h2 class="section-title">🔄 Overname</h2>
+      <p>Wij kopen uw auto snel en eerlijk. Waardebepaling op basis van marktwaarde en technische staat.</p>
+    </div>
+  </section>
+
+  <section id="import-export" class="section">
+    <div class="container">
+      <h2 class="section-title">🌍 Import / Export</h2>
+      <p>Moeiteloze import uit Duitsland, Frankrijk en export wereldwijd. Volledige afhandeling door Choupette.</p>
+    </div>
+  </section>
+
+  <section id="takelwagen" class="section">
+    <div class="container">
+      <h2 class="section-title">🚛 Takelwagen</h2>
+      <p>24/7 professionele takeldienst. Snelle en veilige afvoer van uw voertuig, door heel Nederland.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT FORMULIER (met WhatsApp knop) - LIQUID GLASS LOOK -->
+  <section id="contact-form" class="section">
+    <div class="container">
+      <h2 class="section-title">📬 Stuur ons een bericht</h2>
+      <form id="contactForm" class="form-grid">
+        <div class="form-group"><label>Naam *</label><input type="text" id="name" required></div>
+        <div class="form-group"><label>E-mail *</label><input type="email" id="email" required></div>
+        <div class="form-group"><label>Telefoon</label><input type="tel" id="phone"></div>
+        <div class="form-group"><label>Onderwerp</label><input type="text" id="subject" placeholder="Bijv. Proefrit, Vraag over auto..."></div>
+        <div class="form-group full-width"><label>Bericht *</label><textarea id="message" rows="5" required></textarea></div>
+        <div class="form-buttons-row">
+          <button type="submit" class="submit-btn">Verstuur bericht <i class="fas fa-arrow-right"></i></button>
+          <button type="button" id="whatsappContactBtn" class="whatsapp-contact-btn"><i class="fab fa-whatsapp"></i> WhatsApp bericht</button>
+        </div>
+        <div class="form-feedback full-width" id="formFeedback"></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Choupette</h4>
+        <p>Master-level automotive sinds 2012. Gecertificeerde tweedehands auto's met garantie.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p><i class="fas fa-map-marker-alt"></i> Masterdreef 45, Nieuwegein</p>
+        <p><i class="fas fa-phone"></i> +31 88 123 4567</p>
+        <p><i class="fas fa-envelope"></i> info@choupette.nl</p>
+      </div>
+      <div class="footer-col">
+        <h4>Openingstijden</h4>
+        <p>Ma-Vr: 09:00 - 18:00</p>
+        <p>Za: 10:00 - 16:00</p>
+        <p>Zo: Gesloten</p>
+      </div>
+      <div class="footer-col">
+        <h4>Volg ons</h4>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <div class="qr-code">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://choupette.nl" alt="QR Code">
+          <p>Scan voor website</p>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>© 2026 Choupette — Alle rechten voorbehouden | <a href="#" id="adminTriggerFooter" style="color: #888;">Admin Access</a> | Designed by Ryzon Outsourcing</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ADMIN PANEL (ORIGINEEL - NIET AANGEPAST) -->
+<div class="admin-panel" id="adminPanel" style="display: none;">
+  <div class="admin-menu">
+    <div class="container">
+      <ul class="admin-tabs">
+        <li><button class="admin-tab-btn active" data-tab="dashboard">📊 Dashboard</button></li>
+        <li><button class="admin-tab-btn" data-tab="vehicles">🚗 Voertuigen Beheer</button></li>
+        <li><button class="admin-tab-btn" data-tab="finance">💰 Financieel & Rapportage</button></li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="container">
+    <!-- DASHBOARD TAB -->
+    <div id="dashboard" class="admin-tab-content active">
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3>Welkom bij het Admin Paneel</h3>
+          <button class="logout-btn" id="logoutBtn">🚪 Uitloggen</button>
+        </div>
+        <p>Beheer hier alle voertuigen, financiën en rapportages.</p>
+        <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+          <div class="admin-card" style="flex:1; text-align:center;"><h3 id="totalVehicles">0</h3><p>Totaal Voertuigen</p></div>
+          <div class="admin-card" style="flex:1; text-align:center;"><h3 id="totalSold">0</h3><p>Verkocht</p></div>
+          <div class="admin-card" style="flex:1; text-align:center;"><h3 id="totalRevenue">€0</h3><p>Omzet</p></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- VOERTUIGEN BEHEER TAB -->
+    <div id="vehicles" class="admin-tab-content">
+      <div class="admin-card">
+        <div class="admin-card-header"><h3>➕ Nieuw voertuig toevoegen</h3></div>
+        <form id="addVehicleForm">
+          <div class="form-row">
+            <div class="form-group"><label>Merk/Model *</label><input type="text" id="newName" required></div>
+            <div class="form-group"><label>Bouwjaar *</label><input type="number" id="newYear" required></div>
+            <div class="form-group"><label>Prijs *</label><input type="text" id="newPrice" placeholder="€ 00.000" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Kilometerstand</label><input type="number" id="newKm"></div>
+            <div class="form-group"><label>Brandstof</label><select id="newFuel"><option>Benzine</option><option>Diesel</option><option>Elektrisch</option><option>Hybride</option></select></div>
+            <div class="form-group"><label>Transmissie</label><select id="newTransmission"><option>Automaat</option><option>Handgeschakeld</option></select></div>
+          </div>
+          <div class="form-group full-width">
+            <label>📋 Technische fiche (verschijnt in pop-up)</label>
+            <textarea id="newTechnischeFiche" rows="3" placeholder="Bijv: 113-punten mastercheck, originele staat, geen schade verleden, APK tot 2026..."></textarea>
+          </div>
+          <div class="form-group full-width">
+            <label>📝 Extra notitie (verschijnt in pop-up)</label>
+            <textarea id="newExtraNotitie" rows="2" placeholder="Bijv: Gratis inruil, winterbanden set, 2 jaar garantie..."></textarea>
+          </div>
+          <div class="form-group"><label>Historisch dossier</label><textarea id="newHist" rows="2"></textarea></div>
+          <div class="upload-zone" id="uploadZone"><i class="fas fa-cloud-upload-alt"></i> Klik of sleep foto's (max 15)</div>
+          <input type="file" id="photoUpload" multiple accept="image/*" style="display:none">
+          <div id="photoPreview" style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:1rem;"></div>
+          <button type="submit" class="submit-btn" style="margin-top:1rem;">➕ Voertuig toevoegen</button>
+        </form>
+      </div>
+      
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3>📋 Huidige voorraad</h3>
+          <div>
+            <button class="select-all-btn" id="selectAllVehiclesBtn">✓ Selecteer alles</button>
+            <button class="btn-bulk-whatsapp" id="bulkWhatsappBtn" style="display:none;">📱 Bulk WhatsApp</button>
+          </div>
+        </div>
+        
+        <div id="selectionBar" class="selection-bar" style="display:none;">
+          <span id="selectedCount">0 voertuigen geselecteerd</span>
+          <button class="btn-bulk-whatsapp" id="bulkWhatsappBarBtn">📱 Verstuur naar geselecteerde voertuigen</button>
+        </div>
+        
+        <div id="vehiclesAdminGrid" class="vehicles-admin-grid"></div>
+        
+        <div class="admin-pagination-container" id="adminPaginationContainer">
+          <button class="admin-pagination-btn" id="adminPrevPageBtn" disabled>← Vorige</button>
+          <span class="admin-pagination-info" id="adminPageInfo">Pagina 1 van 1</span>
+          <button class="admin-pagination-btn" id="adminNextPageBtn" disabled>Volgende →</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- FINANCIEEL & RAPPORTAGE TAB -->
+    <div id="finance" class="admin-tab-content">
+      <div class="finance-grid">
+        <div class="finance-card"><h3>💰 Facturatie (Omzet)</h3><div class="finance-amount" id="totalRevenueFinance">€0</div></div>
+        <div class="finance-card"><h3>💵 Cash Flow (Ontvangen)</h3><div class="finance-amount" id="totalCashFlow">€0</div></div>
+        <div class="finance-card"><h3>📈 Netto Marge (Winst)</h3><div class="finance-amount" id="totalProfit">€0</div></div>
+      </div>
+      
+      <div class="admin-card">
+        <div class="admin-card-header"><h3>📊 Verkooprapportage</h3></div>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">Alle</button>
+          <button class="filter-btn" data-filter="today">Vandaag</button>
+          <button class="filter-btn" data-filter="week">Deze Week</button>
+          <button class="filter-btn" data-filter="month">Deze Maand</button>
+        </div>
+        <button class="export-btn" id="exportCsvBtn">📥 Download Financieel Rapport (CSV)</button>
+        <table class="report-table" id="salesTable">
+          <thead>
+            <tr><th>Datum</th><th>Voertuig</th><th>Factuurbedrag</th><th>Onkosten</th><th>Winst</th><th>Methode</th></tr>
+          </thead>
+          <tbody id="salesTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL (voertuigdetails met galerij) -->
+<div id="vehicleModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button class="contact-seller-btn" id="contactSellerBtn"><i class="fas fa-envelope"></i> Contact verkoper</button>
+      <div class="modal-close" id="closeModalBtn">&times;</div>
+    </div>
+    <div id="modalDynamicContent"></div>
+  </div>
+</div>
+
+<!-- SOLD MODAL (Admin functionaliteit) -->
+<div id="soldModal" class="sold-modal">
+  <div class="sold-modal-content">
+    <h3>Registreer verkoop</h3>
+    <form id="soldForm">
+      <div class="form-group"><label>Verkoopdatum</label><input type="date" id="soldDate" required></div>
+      <div class="form-group"><label>Definitieve prijs</label><input type="text" id="soldPrice" required></div>
+      <div class="form-group"><label>Betaalmethode</label><select id="soldMethod"><option>Bankoverschrijving</option><option>Contant</option><option>Pin</option></select></div>
+      <div style="display:flex; gap:1rem; margin-top:1rem;">
+        <button type="submit" class="btn-sold" style="padding:0.5rem 1rem;">Bevestigen</button>
+        <button type="button" id="closeSoldModal" style="background:#EAEAEA; border:none; padding:0.5rem 1rem; border-radius:8px;">Annuleren</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// 1. GLOBALE CONFIGURATIE & DATA
+// ============================================================
+const CONFIG = {
+  adminCode: 'choupette2025',
+  placeholderImages: 'https://placehold.co/800x500/050505/white?text=',
+  adminVehiclesPerPage: 6,
+  whatsappNumber: '319701234567'
+};
+
+let VEHICLES = [
+  { id: 1, name: "Audi RS6 Avant", year: 2023, price: "€ 129.900", priceNum: 129900, km: 18200, fuel: "Benzine", transmission: "Automaat", hp: 600, inkoop: 105000, onkosten: 3200, verkoop: 129900, hist: "Full dealer onderhouden, 1e eigenaar", photoCount: 16, status: "available", technischeFiche: "113-punten mastercheck, originele staat, geen schade verleden", extraNotitie: "Gratis inruil van uw huidige auto" },
+  { id: 2, name: "BMW i4 M50", year: 2024, price: "€ 64.500", priceNum: 64500, km: 19000, fuel: "Elektrisch", transmission: "Automaat", hp: 544, inkoop: 52000, onkosten: 2100, verkoop: 64500, hist: "Import uit Duitsland, accu garantie", photoCount: 14, status: "available", technischeFiche: "Accu check uitgevoerd, laadpaal klaar", extraNotitie: "Inclusief thuislader" },
+  { id: 3, name: "Porsche Taycan 4S", year: 2023, price: "€ 112.000", priceNum: 112000, km: 12400, fuel: "Elektrisch", transmission: "Automaat", hp: 530, inkoop: 94000, onkosten: 4500, verkoop: 112000, hist: "Performance plus pakket", photoCount: 18, status: "available", technischeFiche: "Porsche Approved garantie", extraNotitie: "Sportdesign pakket" },
+  { id: 4, name: "Mercedes-AMG GLE 450", year: 2022, price: "€ 89.900", priceNum: 89900, km: 33000, fuel: "Benzine", transmission: "9G-Tronic", hp: 367, inkoop: 74000, onkosten: 3800, verkoop: 89900, hist: "Nederlands dossier", photoCount: 15, status: "available", technischeFiche: "AMG line, volledige historie", extraNotitie: "Originele dealeronderhouden" }
+];
+
+for (let i = 5; i <= 25; i++) {
+  VEHICLES.push({
+    id: i, name: `Demo Auto ${i}`, year: 2020 + (i % 5), price: `€ ${35000 + (i * 2000)}`, priceNum: 35000 + (i * 2000),
+    km: 10000 + (i * 3000), fuel: i % 2 === 0 ? "Benzine" : "Diesel", transmission: "Automaat", hp: 200 + i,
+    inkoop: 30000 + (i * 1500), onkosten: 1500, verkoop: 35000 + (i * 2000),
+    hist: `Demo historie voor voertuig ${i}`, photoCount: 10, status: "available",
+    technischeFiche: `Technische fiche voor demo auto ${i}`, extraNotitie: `Extra notitie voor demo auto ${i}`
+  });
+}
+
+let SALES_RECORDS = [];
+let nextVehicleId = 26;
+let AppState = { userRole: 'guest', activeVehicle: null, currentPhotoIndex: 0, currentPhotos: [] };
+let activeSoldVehicle = null;
+let uploadedPhotos = [];
+let adminCurrentPage = 1;
+let adminTotalPages = 1;
+let selectedVehicleIds = new Set();
+
+let currentSidePage = 1;
+let totalSidePages = 1;
+const SIDE_VEHICLES_PER_PAGE = 5;
+
+// ============================================================
+// 2. UTILITIES FUNCTIES
+// ============================================================
+const Utils = {
+  generatePhotos(vehicleId, count) {
+    let photos = [];
+    for (let i = 1; i <= count; i++) {
+      photos.push(`${CONFIG.placeholderImages}${vehicleId}+Choupette+${i}`);
+    }
+    return photos;
+  },
+  formatCurrency(amount) { return '€ ' + amount.toLocaleString(); },
+  formatKm(km) { return km.toLocaleString() + ' km'; }
+};
+
+function generateWhatsAppText(vehicle) {
+  return encodeURIComponent(
+    `🚗 *${vehicle.name}* (${vehicle.year})\n` +
+    `💰 Prijs: ${vehicle.price}\n` +
+    `📍 Kilometerstand: ${(vehicle.km || 0).toLocaleString()} km\n` +
+    `⛽ Brandstof: ${vehicle.fuel}\n` +
+    `🔧 Transmissie: ${vehicle.transmission}\n` +
+    `📋 Technische fiche: ${vehicle.technischeFiche || "113-punten mastercheck"}\n` +
+    `📝 Extra: ${vehicle.extraNotitie || "Geen extra notitie"}\n` +
+    `🔗 Bekijk voertuig: ${window.location.href}`
+  );
+}
+
+// ============================================================
+// 3. SIDE-PANEL FUNCTIES (Direct Leverbaar)
+// ============================================================
+function renderSideVehicles() {
+  const container = document.getElementById('sideVehicleList');
+  if (!container) return;
+  
+  const availableVehicles = VEHICLES.filter(v => v.status === 'available');
+  totalSidePages = Math.ceil(availableVehicles.length / SIDE_VEHICLES_PER_PAGE);
+  if (totalSidePages === 0) totalSidePages = 1;
+  if (currentSidePage > totalSidePages) currentSidePage = totalSidePages;
+  if (currentSidePage < 1) currentSidePage = 1;
+  
+  const start = (currentSidePage - 1) * SIDE_VEHICLES_PER_PAGE;
+  const vehiclesToShow = availableVehicles.slice(start, start + SIDE_VEHICLES_PER_PAGE);
+  
+  container.innerHTML = '';
+  vehiclesToShow.forEach(vehicle => {
+    const card = document.createElement('div');
+    card.className = 'side-vehicle-card';
+    card.innerHTML = `
+      <div class="side-vehicle-img"><i class="fas fa-car"></i></div>
+      <div class="side-vehicle-info">
+        <div class="side-vehicle-name">${vehicle.name} (${vehicle.year})</div>
+        <div class="side-vehicle-price">${vehicle.price}</div>
+        <div class="side-vehicle-specs">${Utils.formatKm(vehicle.km)} · ${vehicle.fuel} · ${vehicle.transmission}</div>
+      </div>
+    `;
+    card.addEventListener('click', () => {
+      closeSidePanel();
+      setTimeout(() => { Modal.open(vehicle.id); }, 300);
+    });
+    container.appendChild(card);
+  });
+  
+  document.getElementById('sidePageInfo').innerText = `${currentSidePage} / ${totalSidePages}`;
+  document.getElementById('sidePrevBtn').disabled = currentSidePage <= 1;
+  document.getElementById('sideNextBtn').disabled = currentSidePage >= totalSidePages;
+}
+
+function nextSidePage() { if (currentSidePage < totalSidePages) { currentSidePage++; renderSideVehicles(); } }
+function prevSidePage() { if (currentSidePage > 1) { currentSidePage--; renderSideVehicles(); } }
+
+const sidePanel = document.getElementById('sidePanel');
+const sideOverlay = document.getElementById('sideOverlay');
+const openBtn = document.getElementById('openFleetBtn');
+const closeBtn = document.getElementById('closeSidePanel');
+
+function openSidePanel() {
+  sidePanel.classList.add('open');
+  sideOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  currentSidePage = 1;
+  renderSideVehicles();
+}
+
+function closeSidePanel() {
+  sidePanel.classList.remove('open');
+  sideOverlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ============================================================
+// 4. MENU GRID FUNCTIES (Scroll naar ID)
+// ============================================================
+function initMenuGrid() {
+  const menuItems = document.querySelectorAll('.menu-item');
+  menuItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const targetId = item.dataset.target;
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+}
+
+// ============================================================
+// 5. MODAL FUNCTIES (Voertuigdetails met galerij)
+// ============================================================
+const Modal = {
+  elements: {
+    modal: document.getElementById('vehicleModal'),
+    closeBtn: document.getElementById('closeModalBtn'),
+    contactBtn: document.getElementById('contactSellerBtn'),
+    dynamicContent: document.getElementById('modalDynamicContent')
+  },
+  
+  open(vehicleId) {
+    const vehicle = VEHICLES.find(v => v.id === vehicleId);
+    if (!vehicle) return;
+    AppState.activeVehicle = vehicle;
+    AppState.currentPhotos = Utils.generatePhotos(vehicle.id, vehicle.photoCount);
+    AppState.currentPhotoIndex = 0;
+    this.render();
+    this.elements.modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  },
+  
+  close() {
+    this.elements.modal.classList.remove('active');
+    document.body.style.overflow = '';
+  },
+  
+  scrollToContactForm() {
+    this.close();
+    const contactSection = document.getElementById('contact-form');
+    if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth' });
+  },
+  
+  render() {
+    if (!this.elements.dynamicContent || !AppState.activeVehicle) return;
+    const vehicle = AppState.activeVehicle;
+    const winst = vehicle.verkoop - (vehicle.inkoop + vehicle.onkosten);
+    const isAdmin = AppState.userRole === 'admin';
+    const financeHTML = isAdmin ? `<div class="admin-finance-card visible"><h4>💰 Financiële data (Admin only)</h4><p><strong>Inkoopprijs:</strong> ${Utils.formatCurrency(vehicle.inkoop)}</p><p><strong>Onkosten:</strong> ${Utils.formatCurrency(vehicle.onkosten)}</p><p><strong>Verkoopprijs:</strong> ${Utils.formatCurrency(vehicle.verkoop)}</p><p><strong>Bruto Winst:</strong> ${Utils.formatCurrency(winst)}</p></div>` : `<div class="admin-finance-card"></div>`;
+    
+    this.elements.dynamicContent.innerHTML = `
+      <div class="gallery-container">
+        <div class="main-image-wrapper">
+          <button class="gallery-nav prev" id="galleryPrevBtn"><i class="fas fa-chevron-left"></i></button>
+          <img class="main-image" id="mainGalleryImg" src="${AppState.currentPhotos[0]}" alt="${vehicle.name}">
+          <button class="gallery-nav next" id="galleryNextBtn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="thumbnail-strip" id="thumbnailStrip"></div>
+      </div>
+      <div class="car-detail-info">
+        <h2 style="font-size: 2rem;">${vehicle.name}</h2>
+        <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin: 1rem 0;">
+          <span><i class="fas fa-calendar"></i> ${vehicle.year}</span>
+          <span><i class="fas fa-tachometer-alt"></i> ${Utils.formatKm(vehicle.km)}</span>
+          <span><i class="fas fa-gas-pump"></i> ${vehicle.fuel}</span>
+          <span><i class="fas fa-cogs"></i> ${vehicle.transmission}</span>
+          <span><i class="fas fa-horse-head"></i> ${vehicle.hp} pk</span>
+        </div>
+        <div class="vehicle-price" style="font-size: 2rem; color: var(--vibrant-blue);">${vehicle.price}</div>
+        <div style="margin: 1rem 0;">
+          <span style="background:#c5a05920; padding:4px 12px; border-radius: 50px;">✓ Master Diagnose OK</span>
+          <span style="background:#10b98120; padding:4px 12px; border-radius: 50px;">✓ Keuringsgarantie</span>
+        </div>
+        <p><strong>Historisch dossier:</strong> ${vehicle.hist}</p>
+        <p><strong>📋 Technische fiche:</strong> ${vehicle.technischeFiche || "113-punten mastercheck"}</p>
+        ${vehicle.extraNotitie ? `<p><strong>📝 Extra notitie:</strong> ${vehicle.extraNotitie}</p>` : ''}
+        ${financeHTML}
+      </div>
+    `;
+    this.setupGallery();
+  },
+  
+  setupGallery() {
+    const thumbStrip = document.getElementById('thumbnailStrip');
+    if (!thumbStrip) return;
+    thumbStrip.innerHTML = '';
+    AppState.currentPhotos.forEach((photo, idx) => {
+      const thumb = document.createElement('img');
+      thumb.src = photo;
+      thumb.classList.add('thumbnail');
+      if (idx === AppState.currentPhotoIndex) thumb.classList.add('active-thumb');
+      thumb.addEventListener('click', () => this.setActivePhoto(idx));
+      thumbStrip.appendChild(thumb);
+    });
+    document.getElementById('galleryPrevBtn')?.addEventListener('click', () => this.navigateGallery(-1));
+    document.getElementById('galleryNextBtn')?.addEventListener('click', () => this.navigateGallery(1));
+  },
+  
+  setActivePhoto(index) {
+    AppState.currentPhotoIndex = (index + AppState.currentPhotos.length) % AppState.currentPhotos.length;
+    const mainImg = document.getElementById('mainGalleryImg');
+    if (mainImg) mainImg.src = AppState.currentPhotos[AppState.currentPhotoIndex];
+    document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+      if (i === AppState.currentPhotoIndex) thumb.classList.add('active-thumb');
+      else thumb.classList.remove('active-thumb');
+    });
+  },
+  
+  navigateGallery(direction) { this.setActivePhoto(AppState.currentPhotoIndex + direction); },
+  
+  init() {
+    if (this.elements.closeBtn) this.elements.closeBtn.addEventListener('click', () => this.close());
+    if (this.elements.contactBtn) this.elements.contactBtn.addEventListener('click', () => this.scrollToContactForm());
+    if (this.elements.modal) this.elements.modal.addEventListener('click', (e) => { if (e.target === this.elements.modal) this.close(); });
+  }
+};
+
+// ============================================================
+// 6. CHOUPETTE ESTIMATOR FUNCTIES (AI waardering)
+// ============================================================
+(function() {
+  const estimatorConfig = {
+    primaryColor: "#C5A059",
+    whatsappNumber: "319701234567",
+    dealerMargin: 0.85,
+  };
+  
+  function getBaseMarketPrice(merkModel, bouwjaar, km, staat) {
+    let basisPrijs = 0;
+    const currentYear = 2026;
+    const leeftijd = currentYear - bouwjaar;
+    if (leeftijd < 0) return 12500;
+    
+    const merkMap = {
+      "Audi A3": 28500, "BMW 3 Serie": 31000, "Mercedes C-Klasse": 33500,
+      "Volkswagen Golf": 22500, "Tesla Model 3": 38500, "Toyota Corolla": 19500,
+      "Ford Focus": 17500, "Volvo XC60": 36500
+    };
+    basisPrijs = merkMap[merkModel] || 24000;
+    
+    let leeftijdFactor = Math.max(0.3, 1 - (leeftijd * 0.11));
+    let prijsNaLeeftijd = basisPrijs * leeftijdFactor;
+    
+    let kmFactor = 1;
+    let referenceKm = 60000;
+    if (km > referenceKm) {
+      let overKm = km - referenceKm;
+      let reductie = (overKm / 1000) * 0.002;
+      reductie = Math.min(0.3, reductie);
+      kmFactor = 1 - reductie;
+    } else if (km < referenceKm) {
+      let bonus = (referenceKm - km) / 1000 * 0.001;
+      kmFactor = 1 + Math.min(0.12, bonus);
+    }
+    let prijsNaKm = prijsNaLeeftijd * kmFactor;
+    
+    let staatMulti = 1.0;
+    if (staat === 'excellent') staatMulti = 1.12;
+    if (staat === 'good') staatMulti = 1.0;
+    if (staat === 'used') staatMulti = 0.86;
+    
+    let finaleMarktPrijs = prijsNaKm * staatMulti;
+    finaleMarktPrijs = Math.max(2800, Math.round(finaleMarktPrijs / 100) * 100);
+    return finaleMarktPrijs;
+  }
+  
+  function animateNumber(element, start, end, duration = 1100) {
+    if (!element) return;
+    let startTime = null;
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min(1, (timestamp - startTime) / duration);
+      const currentVal = Math.floor(start + (end - start) * progress);
+      element.innerText = '€ ' + currentVal.toLocaleString('nl-NL');
+      if (progress < 1) requestAnimationFrame(step);
+      else element.innerText = '€ ' + end.toLocaleString('nl-NL');
+    };
+    requestAnimationFrame(step);
+  }
+  
+  function renderResult(estimatedMarketPrice, dealerBuyPrice, carDetails) {
+    const dynamicArea = document.getElementById('choupette-dynamic-area');
+    if (!dynamicArea) return;
+    const { merk, bouwjaar, km, staatText } = carDetails;
+    const detailString = `${merk} | ${bouwjaar} | ${km.toLocaleString()} km | Staat: ${staatText}`;
+    const whatsappMsg = `Hallo! 👋 Ik heb zojuist de Choupette Estimator gebruikt voor mijn ${merk} (${bouwjaar}, ${km.toLocaleString()} km). 📊 Geschatte marktwaarde: € ${estimatedMarketPrice.toLocaleString()} | Inkoopprijs dealerindicatie: € ${dealerBuyPrice.toLocaleString()}. Ik wil graag meer weten over verkoop/mogelijkheden.`;
+    const encodedMsg = encodeURIComponent(whatsappMsg);
+    const whatsappUrl = `https://wa.me/${estimatorConfig.whatsappNumber}?text=${encodedMsg}`;
+    
+    dynamicArea.innerHTML = `
+      <div class="result-box">
+        <div style="font-size:0.9rem; letter-spacing:1px;">🔍 CHOUPETTE AI-WAARDERING</div>
+        <div class="estimate-price" id="choupette-final-price">€ 0</div>
+        <div class="car-detail-summary">📋 ${detailString}</div>
+        <div style="display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; flex-wrap: wrap;">
+          <div style="background:rgba(0,0,0,0.04); border-radius: 24px; padding: 8px 14px;"><span style="opacity:0.7;">📈 Marktwaarde:</span><br><strong>€ ${estimatedMarketPrice.toLocaleString()}</strong></div>
+          <div style="background:rgba(0,0,0,0.04); border-radius: 24px; padding: 8px 14px;"><span style="opacity:0.7;">🏦 Dealer inkoop (${Math.round(estimatorConfig.dealerMargin * 100)}%):</span><br><strong>€ ${dealerBuyPrice.toLocaleString()}</strong></div>
+        </div>
+        <button id="whatsapp-share-btn" class="whatsapp-btn">📱 Stuur naar WhatsApp → Advies</button>
+      </div>
+    `;
+    const priceSpan = document.getElementById('choupette-final-price');
+    if (priceSpan) animateNumber(priceSpan, 0, estimatedMarketPrice, 1000);
+    const waBtn = document.getElementById('whatsapp-share-btn');
+    if (waBtn) waBtn.addEventListener('click', (e) => { e.preventDefault(); window.open(whatsappUrl, '_blank'); });
+  }
+  
+  function computeValuationFromForm() {
+    const merkSelect = document.getElementById('car-model-select');
+    const merk = merkSelect ? merkSelect.value : "Volkswagen Golf";
+    const yearInput = document.getElementById('year-input');
+    let bouwjaar = parseInt(yearInput ? yearInput.value : 2020);
+    if (isNaN(bouwjaar) || bouwjaar < 1995) bouwjaar = 2015;
+    if (bouwjaar > 2026) bouwjaar = 2026;
+    const kmInput = document.getElementById('km-input');
+    let km = parseInt(kmInput ? kmInput.value : 70000);
+    if (isNaN(km) || km < 0) km = 50000;
+    const conditionSelect = document.getElementById('condition-select');
+    const staatRaw = conditionSelect ? conditionSelect.value : 'good';
+    let staatText = staatRaw === 'excellent' ? "Uitstekend" : (staatRaw === 'good' ? "Goed" : "Gebruikt");
+    
+    const marktPrijs = getBaseMarketPrice(merk, bouwjaar, km, staatRaw);
+    const dealerPrijs = Math.floor(marktPrijs * estimatorConfig.dealerMargin);
+    renderResult(marktPrijs, dealerPrijs, { merk, bouwjaar, km, staatText });
+  }
+  
+  function showAIScanAndCompute(callback) {
+    const dynamicArea = document.getElementById('choupette-dynamic-area');
+    if (!dynamicArea) return;
+    dynamicArea.innerHTML = `
+      <div class="ai-scan-overlay">
+        <div class="scan-line"></div>
+        <div class="ai-text">🧠 Choupette AI analyseert marktdata</div>
+        <div class="scan-dots">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+        <div style="font-size:0.9rem; color:#666;">⏳ Verbinden met AutoScout24 & Marktplaats trends ...</div>
+        <div style="margin-top: 12px; font-size:0.8rem; font-weight:300;">recente verkoopprijzen, kilometercorrectie, staatsscore</div>
+      </div>
+    `;
+    setTimeout(() => { if (callback) callback(); }, 2200);
+  }
+  
+  function startValuationFlow() {
+    const yearVal = document.getElementById('year-input')?.value;
+    const kmVal = document.getElementById('km-input')?.value;
+    const dynamicArea = document.getElementById('choupette-dynamic-area');
+    if (!yearVal || yearVal < 1990 || yearVal > 2030) {
+      if(dynamicArea) dynamicArea.innerHTML = `<div class="error-message">⚠️ Voer een geldig bouwjaar in (1990-2026).</div>`;
+      setTimeout(() => { if(dynamicArea && dynamicArea.innerHTML.includes('error')) dynamicArea.innerHTML = ''; }, 2000);
+      return;
+    }
+    if (!kmVal || kmVal < 0 || kmVal > 500000) {
+      if(dynamicArea) dynamicArea.innerHTML = `<div class="error-message">⚠️ Kilometerstand ongeldig (0-500.000).</div>`;
+      setTimeout(() => { if(dynamicArea && dynamicArea.innerHTML.includes('error')) dynamicArea.innerHTML = ''; }, 2000);
+      return;
+    }
+    showAIScanAndCompute(() => { computeValuationFromForm(); });
+  }
+  
+  const valuateBtn = document.getElementById('choupette-valuate-btn');
+  if (valuateBtn) valuateBtn.addEventListener('click', (e) => { e.preventDefault(); startValuationFlow(); });
+})();
+
+// ============================================================
+// 7. CONTACT FORMULIER FUNCTIES (E-mail + WhatsApp)
+// ============================================================
+const ContactForm = {
+  elements: { form: document.getElementById('contactForm'), feedback: document.getElementById('formFeedback') },
+  submit(e) {
+    e.preventDefault();
+    const name = document.getElementById('name')?.value;
+    const email = document.getElementById('email')?.value;
+    const message = document.getElementById('message')?.value;
+    if (name && email && message) {
+      this.elements.feedback.innerHTML = '<span style="color: #10b981;">✓ Bericht verzonden! Wij nemen spoedig contact op.</span>';
+      this.elements.form.reset();
+      setTimeout(() => { this.elements.feedback.innerHTML = ''; }, 5000);
+    } else {
+      this.elements.feedback.innerHTML = '<span style="color: #ef4444;">Vul alle verplichte velden in.</span>';
+    }
+  },
+  init() { if (this.elements.form) this.elements.form.addEventListener('submit', (e) => this.submit(e)); }
+};
+
+function initWhatsAppContact() {
+  const whatsappBtn = document.getElementById('whatsappContactBtn');
+  if (!whatsappBtn) return;
+  whatsappBtn.addEventListener('click', () => {
+    const name = document.getElementById('name')?.value || '';
+    const email = document.getElementById('email')?.value || '';
+    const phone = document.getElementById('phone')?.value || '';
+    const subject = document.getElementById('subject')?.value || '';
+    const message = document.getElementById('message')?.value || '';
+    let whatsappMessage = `Hallo Choupette,%0A%0A*Nieuw bericht via de website*%0A%0A`;
+    if (name) whatsappMessage += `📌 *Naam:* ${name}%0A`;
+    if (email) whatsappMessage += `📧 *E-mail:* ${email}%0A`;
+    if (phone) whatsappMessage += `📞 *Telefoon:* ${phone}%0A`;
+    if (subject) whatsappMessage += `📋 *Onderwerp:* ${subject}%0A`;
+    if (message) whatsappMessage += `💬 *Bericht:* ${message}%0A`;
+    window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${whatsappMessage}`, '_blank');
+  });
+}
+
+// ============================================================
+// 8. ADMIN PANEL FUNCTIES (Origineel, intact gelaten)
+// ============================================================
+function renderAdminVehicles() {
+  const grid = document.getElementById('vehiclesAdminGrid');
+  if (!grid) return;
+  const availableVehicles = VEHICLES.filter(v => v.status === 'available');
+  adminTotalPages = Math.ceil(availableVehicles.length / CONFIG.adminVehiclesPerPage);
+  if (adminCurrentPage > adminTotalPages) adminCurrentPage = adminTotalPages;
+  if (adminCurrentPage < 1) adminCurrentPage = 1;
+  if (adminTotalPages === 0) adminTotalPages = 1;
+  const startIndex = (adminCurrentPage - 1) * CONFIG.adminVehiclesPerPage;
+  const vehiclesToShow = availableVehicles.slice(startIndex, startIndex + CONFIG.adminVehiclesPerPage);
+  grid.innerHTML = '';
+  vehiclesToShow.forEach(vehicle => {
+    const isChecked = selectedVehicleIds.has(vehicle.id);
+    const whatsappLink = `https://wa.me/?text=${generateWhatsAppText(vehicle)}`;
+    const card = document.createElement('div');
+    card.className = 'vehicle-admin-card';
+    card.innerHTML = `<input type="checkbox" class="vehicle-select-checkbox" data-id="${vehicle.id}" ${isChecked ? 'checked' : ''}><div><strong>${vehicle.name}</strong> (${vehicle.year})<div style="color: var(--vibrant-blue); font-weight:700;">${vehicle.price}</div><div style="font-size:0.75rem;">${Utils.formatKm(vehicle.km)} · ${vehicle.fuel}</div></div><div class="card-actions"><button class="btn-sm btn-edit" data-id="${vehicle.id}">✏️ Bewerken</button><button class="btn-sm btn-delete" data-id="${vehicle.id}">🗑️ Verwijderen</button><button class="btn-sm btn-sold" data-id="${vehicle.id}">💰 Markeer Verkocht</button><a href="${whatsappLink}" target="_blank" class="btn-whatsapp">📱 WhatsApp</a></div>`;
+    grid.appendChild(card);
+  });
+  document.getElementById('adminPageInfo').innerText = `Pagina ${adminCurrentPage} van ${adminTotalPages}`;
+  document.getElementById('adminPrevPageBtn').disabled = adminCurrentPage <= 1;
+  document.getElementById('adminNextPageBtn').disabled = adminCurrentPage >= adminTotalPages;
+  document.querySelectorAll('.btn-edit').forEach(btn => btn.addEventListener('click', () => alert('Bewerk functionaliteit - Uitbreidbaar')));
+  document.querySelectorAll('.btn-delete').forEach(btn => btn.addEventListener('click', () => { if(confirm('Verwijderen?')) { VEHICLES = VEHICLES.filter(v => v.id != btn.dataset.id); selectedVehicleIds.delete(parseInt(btn.dataset.id)); renderAdminVehicles(); if (sidePanel.classList.contains('open')) renderSideVehicles(); updateDashboard(); } }));
+  document.querySelectorAll('.btn-sold').forEach(btn => btn.addEventListener('click', () => { activeSoldVehicle = VEHICLES.find(v => v.id == btn.dataset.id); if(activeSoldVehicle) document.getElementById('soldModal').classList.add('active'); }));
+  document.querySelectorAll('.vehicle-select-checkbox').forEach(cb => cb.addEventListener('change', (e) => { const id = parseInt(e.target.dataset.id); if(e.target.checked) selectedVehicleIds.add(id); else selectedVehicleIds.delete(id); updateSelectionBar(); }));
+  updateSelectionBar();
+  updateDashboard();
+}
+
+function updateSelectionBar() {
+  const bar = document.getElementById('selectionBar');
+  const count = selectedVehicleIds.size;
+  if(bar) {
+    if(count > 0) {
+      bar.style.display = 'flex';
+      document.getElementById('selectedCount').innerText = `${count} voertuig${count !== 1 ? 'en' : ''} geselecteerd`;
+    } else bar.style.display = 'none';
+  }
+}
+
+function sendBulkWhatsApp() {
+  if(selectedVehicleIds.size === 0) { alert("Selecteer eerst voertuigen"); return; }
+  const selected = VEHICLES.filter(v => selectedVehicleIds.has(v.id) && v.status === 'available');
+  if(selected.length === 0) return;
+  let msg = `🚗 Choupette - Geselecteerde voertuigen 🚗\n\nTotaal: ${selected.length}\n\n`;
+  selected.forEach((v,i)=>{ msg+=`${i+1}. *${v.name}* (${v.year})\n   💰 ${v.price}\n   📍 ${(v.km||0).toLocaleString()} km\n   📋 ${v.technischeFiche||"113-punten mastercheck"}\n\n`; });
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function adminNextPage() { if(adminCurrentPage < adminTotalPages) { adminCurrentPage++; renderAdminVehicles(); } }
+function adminPrevPage() { if(adminCurrentPage > 1) { adminCurrentPage--; renderAdminVehicles(); } }
+function selectAllVehiclesOnPage() {
+  const available = VEHICLES.filter(v => v.status === 'available');
+  const start = (adminCurrentPage-1)*CONFIG.adminVehiclesPerPage;
+  available.slice(start, start+CONFIG.adminVehiclesPerPage).forEach(v => selectedVehicleIds.add(v.id));
+  renderAdminVehicles();
+}
+
+function updateDashboard() {
+  const available = VEHICLES.filter(v => v.status === 'available').length;
+  const sold = VEHICLES.filter(v => v.status === 'sold').length;
+  const revenue = SALES_RECORDS.reduce((s,r)=>s+r.priceNum,0);
+  const profit = SALES_RECORDS.reduce((s,r)=>s+(r.priceNum-(r.inkoop||0)-(r.onkosten||0)),0);
+  document.getElementById('totalVehicles') && (document.getElementById('totalVehicles').innerText = available);
+  document.getElementById('totalSold') && (document.getElementById('totalSold').innerText = sold);
+  document.getElementById('totalRevenue') && (document.getElementById('totalRevenue').innerText = Utils.formatCurrency(revenue));
+  document.getElementById('totalRevenueFinance') && (document.getElementById('totalRevenueFinance').innerText = Utils.formatCurrency(revenue));
+  document.getElementById('totalCashFlow') && (document.getElementById('totalCashFlow').innerText = Utils.formatCurrency(revenue));
+  document.getElementById('totalProfit') && (document.getElementById('totalProfit').innerText = Utils.formatCurrency(profit));
+  renderSalesTable();
+}
+
+function renderSalesTable(filter = 'all') {
+  const tbody = document.getElementById('salesTableBody');
+  if(!tbody) return;
+  let filtered = [...SALES_RECORDS];
+  const now = new Date();
+  if(filter === 'today') filtered = filtered.filter(s => new Date(s.date).toDateString() === now.toDateString());
+  else if(filter === 'week') { const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7); filtered = filtered.filter(s => new Date(s.date) >= weekAgo); }
+  else if(filter === 'month') { const monthAgo = new Date(); monthAgo.setMonth(monthAgo.getMonth() - 1); filtered = filtered.filter(s => new Date(s.date) >= monthAgo); }
+  tbody.innerHTML = '';
+  filtered.forEach(s => { const row = tbody.insertRow(); row.insertCell(0).innerText = s.date; row.insertCell(1).innerText = s.vehicle; row.insertCell(2).innerText = Utils.formatCurrency(s.priceNum); row.insertCell(3).innerText = Utils.formatCurrency(s.onkosten || 0); row.insertCell(4).innerText = Utils.formatCurrency((s.priceNum - (s.inkoop || 0) - (s.onkosten || 0))); row.insertCell(5).innerText = s.method; });
+}
+
+function logoutAdmin() { AppState.userRole = 'guest'; document.getElementById('adminPanel').style.display = 'none'; selectedVehicleIds.clear(); alert("Uitgelogd."); }
+function showAdminPanel() { document.getElementById('adminPanel').style.display = 'block'; adminCurrentPage = 1; selectedVehicleIds.clear(); renderAdminVehicles(); updateDashboard(); }
+
+const Admin = {
+  enable() { AppState.userRole = 'admin'; showAdminPanel(); alert("Admin modus actief"); if(AppState.activeVehicle) Modal.render(); },
+  checkAccess() { const pwd = prompt("Admin toegangscode:"); if(pwd === CONFIG.adminCode) this.enable(); else if(pwd) alert("Onjuiste code"); },
+  init() { document.querySelector('.logo')?.addEventListener('dblclick', () => this.checkAccess()); document.getElementById('adminTriggerFooter')?.addEventListener('click', (e) => { e.preventDefault(); this.checkAccess(); }); }
+};
+
+// ============================================================
+// 9. ADMIN FORMULIER (Nieuw voertuig toevoegen)
+// ============================================================
+function initAdminForm() {
+  document.getElementById('addVehicleForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const priceStr = document.getElementById('newPrice').value.replace(/[^0-9]/g, '');
+    const newVehicle = { 
+      id: nextVehicleId++, name: document.getElementById('newName').value, year: parseInt(document.getElementById('newYear').value), 
+      price: '€ ' + priceStr, priceNum: parseInt(priceStr), km: parseInt(document.getElementById('newKm').value) || 0, 
+      fuel: document.getElementById('newFuel').value, transmission: document.getElementById('newTransmission').value, hp: 0, 
+      inkoop: parseInt(priceStr) * 0.8, onkosten: 2000, verkoop: parseInt(priceStr), 
+      hist: document.getElementById('newHist').value || "Geen historie beschikbaar",
+      technischeFiche: document.getElementById('newTechnischeFiche').value || "113-punten mastercheck",
+      extraNotitie: document.getElementById('newExtraNotitie').value || "",
+      photoCount: uploadedPhotos.length, status: 'available', photos: uploadedPhotos 
+    };
+    VEHICLES.push(newVehicle);
+    renderAdminVehicles();
+    if (sidePanel.classList.contains('open')) renderSideVehicles();
+    updateDashboard();
+    document.getElementById('addVehicleForm').reset();
+    uploadedPhotos = [];
+    document.getElementById('photoPreview').innerHTML = '';
+  });
+  document.getElementById('uploadZone')?.addEventListener('click', () => document.getElementById('photoUpload').click());
+  document.getElementById('photoUpload')?.addEventListener('change', (e) => { uploadedPhotos = Array.from(e.target.files); const preview = document.getElementById('photoPreview'); preview.innerHTML = ''; uploadedPhotos.forEach(f => { const img = document.createElement('img'); img.src = URL.createObjectURL(f); img.style.width = '50px'; img.style.height = '50px'; img.style.objectFit = 'cover'; img.style.borderRadius = '8px'; preview.appendChild(img); }); });
+}
+
+// ============================================================
+// 10. SOLD MODAL (Verkoop registreren)
+// ============================================================
+function initSoldModal() {
+  document.getElementById('soldForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if(activeSoldVehicle) {
+      const soldPrice = parseInt(document.getElementById('soldPrice').value.replace(/[^0-9]/g, '')) || activeSoldVehicle.priceNum;
+      SALES_RECORDS.push({ date: document.getElementById('soldDate').value, vehicle: activeSoldVehicle.name, priceNum: soldPrice, inkoop: activeSoldVehicle.inkoop, onkosten: activeSoldVehicle.onkosten, method: document.getElementById('soldMethod').value });
+      activeSoldVehicle.status = 'sold';
+      renderAdminVehicles();
+      if (sidePanel.classList.contains('open')) renderSideVehicles();
+      updateDashboard();
+    }
+    document.getElementById('soldModal').classList.remove('active');
+  });
+  document.getElementById('closeSoldModal')?.addEventListener('click', () => document.getElementById('soldModal').classList.remove('active'));
+}
+
+// ============================================================
+// 11. FILTERS & EXPORT FUNCTIES
+// ============================================================
+function initFilters() {
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => { document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); renderSalesTable(btn.dataset.filter); }));
+  document.getElementById('exportCsvBtn')?.addEventListener('click', () => { let csv = "Datum,Voertuig,Factuurbedrag,Onkosten,Winst,Betaalmethode\n"; SALES_RECORDS.forEach(s => { csv += `${s.date},${s.vehicle},${s.priceNum},${s.onkosten||0},${s.priceNum-(s.inkoop||0)-(s.onkosten||0)},${s.method}\n`; }); const blob = new Blob([csv], {type:'text/csv'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'choupette_financieel_rapport.csv'; a.click(); URL.revokeObjectURL(a.href); });
+}
+
+// ============================================================
+// 12. INITIALISATIE
+// ============================================================
+document.getElementById('logoutBtn')?.addEventListener('click', logoutAdmin);
+
+document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+document.getElementById('adminPrevPageBtn')?.addEventListener('click', adminPrevPage);
+document.getElementById('adminNextPageBtn')?.addEventListener('click', adminNextPage);
+document.getElementById('selectAllVehiclesBtn')?.addEventListener('click', selectAllVehiclesOnPage);
+document.getElementById('bulkWhatsappBtn')?.addEventListener('click', sendBulkWhatsApp);
+document.getElementById('bulkWhatsappBarBtn')?.addEventListener('click', sendBulkWhatsApp);
+
+function initApp() {
+  Modal.init();
+  Admin.init();
+  ContactForm.init();
+  initMenuGrid();
+  initWhatsAppContact();
+  initAdminForm();
+  initSoldModal();
+  initFilters();
+  
+  if (openBtn) openBtn.addEventListener('click', (e) => { e.preventDefault(); openSidePanel(); });
+  if (closeBtn) closeBtn.addEventListener('click', closeSidePanel);
+  if (sideOverlay) sideOverlay.addEventListener('click', closeSidePanel);
+  
+  const sidePrevBtn = document.getElementById('sidePrevBtn');
+  const sideNextBtn = document.getElementById('sideNextBtn');
+  if (sidePrevBtn) sidePrevBtn.addEventListener('click', prevSidePage);
+  if (sideNextBtn) sideNextBtn.addEventListener('click', nextSidePage);
+  
+  console.log('Choupette Platform - Carbon Fiber achtergrond actief');
+}
+initApp();
+</script>
+</body>
+</html>
