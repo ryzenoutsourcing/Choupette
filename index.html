@@ -2389,13 +2389,53 @@ const ContactFormSupabase = {
     this.elements.feedback.innerHTML = "⏳ Versturen...";
 
     try {
-      const { error } = await supabaseClient
-        .from('contacts')
-        .insert([{ name, email, phone, subject, message }]);
+      const { error } = // 1. Save in Supabase
+await supabaseClient
+  .from('contacts')
+  .insert([{ name, email, phone, subject, message }]);
 
+// 2. Send email confirmation
+await fetch("https://api.resend.com/emails", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer re_49DJsWAE_6mgLZDcB5oAb8Zr8qC1TbYnm",
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    from: "Choupette <onboarding@resend.dev>",
+    to: [email],
+    subject: "Wij hebben je aanvraag ontvangen 🚗",
+
+    html: `
+      <div style="font-family: Arial, sans-serif; padding:20px; color:#111;">
+        
+        <h2 style="color:#C5A059;">Choupette</h2>
+
+        <!-- NL -->
+        <p><strong>Hallo ${name},</strong></p>
+        <p>Bedankt voor uw aanvraag. Uw bericht werd succesvol ontvangen.</p>
+        <p>Ons team zal u binnenkort persoonlijk contacteren.</p>
+
+        <hr style="margin:25px 0; border:none; border-top:1px solid #eee;">
+
+        <!-- FR -->
+        <p><strong>Bonjour ${name},</strong></p>
+        <p>Merci pour votre demande. Votre message a bien été reçu.</p>
+        <p>Notre équipe vous contactera très prochainement.</p>
+
+        <br>
+
+        <p style="font-size:12px; color:#777;">
+          Choupette – Master-level automotive excellence
+        </p>
+
+      </div>
+    `
+  })
+});
       if (error) throw error;
 
-      this.elements.feedback.innerHTML = '<span style="color:#10b981;">✅ Bericht opgeslagen!</span>';
+      this.elements.feedback.innerHTML = '<span style="color:#10b981;">✅ Bericht verzonden!</span>';
       this.elements.form.reset();
 
     } catch (err) {
