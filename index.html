@@ -2351,11 +2351,14 @@ initApp();
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-const { createClient } = supabase;
-const supabaseClient = createClient(
-  "https://lhikxiusnhpkfjbdbbjc.supabase.co",
-  "sb_publishable_MoyW7wBJzwf-7oFEmesQTw_QvQX4JKL"
-);
+window.addEventListener("load", () => {
+  const { createClient } = window.supabase;
+
+  window.supabaseClient = createClient(
+    "https://lhikxiusnhpkfjbdbbjc.supabase.co",
+    "sb_publishable_MoyW7wBJzwf-7oFEmesQTw_QvQX4JKL"
+  );
+});
 </script>
 
 <!-- ============================================================ -->
@@ -2449,7 +2452,9 @@ async submit(e) {
   }
 };
 
-ContactFormSupabase.init();
+window.addEventListener("load", () => {
+  ContactFormSupabase.init();
+});
 </script>
 
 </body>
