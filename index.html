@@ -2372,78 +2372,77 @@ const ContactFormSupabase = {
     return input.replace(/[<>]/g, "");
   },
 
-  async submit(e) {
-    e.preventDefault();
+async submit(e) {
+  e.preventDefault();
 
-    const name = this.sanitize(document.getElementById('name')?.value || "");
-    const email = this.sanitize(document.getElementById('email')?.value || "");
-    const phone = this.sanitize(document.getElementById('phone')?.value || "");
-    const subject = this.sanitize(document.getElementById('subject')?.value || "");
-    const message = this.sanitize(document.getElementById('message')?.value || "");
+  const name = this.sanitize(document.getElementById('name')?.value || "");
+  const email = this.sanitize(document.getElementById('email')?.value || "");
+  const phone = this.sanitize(document.getElementById('phone')?.value || "");
+  const subject = this.sanitize(document.getElementById('subject')?.value || "");
+  const message = this.sanitize(document.getElementById('message')?.value || "");
 
-    if (!name || !email || !message) {
-      this.elements.feedback.innerHTML = '<span style="color:#ef4444;">Vul alle verplichte velden in.</span>';
-      return;
-    }
+  if (!name || !email || !message) {
+    this.elements.feedback.innerHTML = '<span style="color:#ef4444;">Vul alle verplichte velden in.</span>';
+    return;
+  }
 
-    this.elements.feedback.innerHTML = "⏳ Versturen...";
+  this.elements.feedback.innerHTML = "⏳ Versturen...";
 
-    try {
-      const { error } = // 1. Save in Supabase
-await supabaseClient
-  .from('contacts')
-  .insert([{ name, email, phone, subject, message }]);
+  try {
+    // ✅ 1. SAVE TO SUPABASE
+    const { error: dbError } = await supabaseClient
+      .from('contacts')
+      .insert([{ name, email, phone, subject, message }]);
 
-// 2. Send email confirmation
-await fetch("https://api.resend.com/emails", {
-  method: "POST",
-  headers: {
-    "Authorization": "Bearer re_49DJsWAE_6mgLZDcB5oAb8Zr8qC1TbYnm",
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    from: "Choupette <onboarding@resend.dev>",
-    to: [email],
-    subject: "Wij hebben je aanvraag ontvangen 🚗",
+    if (dbError) throw dbError;
 
-    html: `
-      <div style="font-family: Arial, sans-serif; padding:20px; color:#111;">
-        
-        <h2 style="color:#C5A059;">Choupette</h2>
+    // ✅ 2. SEND EMAIL
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer re_49DJsWAE_6mgLZDcB5oAb8Zr8qC1TbYnm",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        from: "Choupette <onboarding@resend.dev>",
+        to: [email],
+        subject: "Wij hebben je aanvraag ontvangen 🚗",
+        html: `
+          <div style="font-family: Arial; padding:20px;">
+            <h2 style="color:#C5A059;">Choupette</h2>
 
-        <!-- NL -->
-        <p><strong>Hallo ${name},</strong></p>
-        <p>Bedankt voor uw aanvraag. Uw bericht werd succesvol ontvangen.</p>
-        <p>Ons team zal u binnenkort persoonlijk contacteren.</p>
+            <p><strong>Hallo ${name},</strong></p>
+            <p>Bedankt voor uw aanvraag.</p>
 
-        <hr style="margin:25px 0; border:none; border-top:1px solid #eee;">
+            <hr>
 
-        <!-- FR -->
-        <p><strong>Bonjour ${name},</strong></p>
-        <p>Merci pour votre demande. Votre message a bien été reçu.</p>
-        <p>Notre équipe vous contactera très prochainement.</p>
+            <p><strong>Bonjour ${name},</strong></p>
+            <p>Merci pour votre demande.</p>
 
-        <br>
+            <p style="font-size:12px;color:#777;">
+              Choupette – Master-level automotive excellence
+            </p>
+          </div>
+        `
+      })
+    });
 
-        <p style="font-size:12px; color:#777;">
-          Choupette – Master-level automotive excellence
-        </p>
+    const data = await res.json();
+    console.log("Resend response:", data);
 
-      </div>
-    `
-  })
-});
-      if (error) throw error;
+    if (!res.ok) throw new Error("Email failed");
 
-      this.elements.feedback.innerHTML = '<span style="color:#10b981;">✅ Bericht verzonden!</span>';
-      this.elements.form.reset();
+    // ✅ SUCCESS
+    this.elements.feedback.innerHTML = '<span style="color:#10b981;">✅ Bericht verzonden!</span>';
+    this.elements.form.reset();
 
-    } catch (err) {
-      console.error(err);
-      this.elements.feedback.innerHTML =
-        '<span style="color:#ef4444;">❌ Fout. Gebruik WhatsApp.</span>';
-    }
-  },
+  } catch (err) {
+    console.error("ERROR:", err);
+
+    this.elements.feedback.innerHTML =
+      '<span style="color:#ef4444;">❌ Fout. Gebruik WhatsApp.</span>';
+  }
+}
 
   init() {
     this.elements.form?.addEventListener('submit', (e) => this.submit(e));
