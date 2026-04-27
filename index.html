@@ -2400,7 +2400,7 @@ async submit(e) {
     if (dbError) throw dbError;
 
     // ✅ 2. SEND EMAIL
-    const res = await fetch("https://api.resend.com/emails", {
+    const res = await fetch("/api/send-email", {
       method: "POST",
       headers: {
         "Authorization": "Bearer re_49DJsWAE_6mgLZDcB5oAb8Zr8qC1TbYnm",
