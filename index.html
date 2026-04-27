@@ -1854,17 +1854,12 @@ function closeSidePanel() {
 // ============================================================
 // 4. MENU GRID FUNCTIES (Scroll naar ID)
 // ============================================================
-function initMenuGrid() {
-  const menuItems = document.querySelectorAll('.menu-item');
-  menuItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const targetId = item.dataset.target;
-      const targetElement = document.getElementById(targetId);
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  const offset = 80;
+  const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
+
+  window.scrollTo({ top: y, behavior: 'smooth' });
 }
 
 // ============================================================
@@ -1911,7 +1906,7 @@ const Modal = {
       <div class="gallery-container">
         <div class="main-image-wrapper">
           <button class="gallery-nav prev" id="galleryPrevBtn"><i class="fas fa-chevron-left"></i></button>
-          <img class="main-image" id="mainGalleryImg" src="${AppState.currentPhotos[0]}" alt="${vehicle.name}">
+          <img class="main-image" loading="lazy" id="mainGalleryImg" src="${AppState.currentPhotos[0]}" alt="${vehicle.name}">
           <button class="gallery-nav next" id="galleryNextBtn"><i class="fas fa-chevron-right"></i></button>
         </div>
         <div class="thumbnail-strip" id="thumbnailStrip"></div>
@@ -1945,6 +1940,7 @@ const Modal = {
     thumbStrip.innerHTML = '';
     AppState.currentPhotos.forEach((photo, idx) => {
       const thumb = document.createElement('img');
+      thumb.loading = "lazy";
       thumb.src = photo;
       thumb.classList.add('thumbnail');
       if (idx === AppState.currentPhotoIndex) thumb.classList.add('active-thumb');
@@ -2124,23 +2120,6 @@ const Modal = {
 // ============================================================
 // 7. CONTACT FORMULIER FUNCTIES (E-mail + WhatsApp)
 // ============================================================
-const ContactForm = {
-  elements: { form: document.getElementById('contactForm'), feedback: document.getElementById('formFeedback') },
-  submit(e) {
-    e.preventDefault();
-    const name = document.getElementById('name')?.value;
-    const email = document.getElementById('email')?.value;
-    const message = document.getElementById('message')?.value;
-    if (name && email && message) {
-      this.elements.feedback.innerHTML = '<span style="color: #10b981;">✓ Bericht verzonden! Wij nemen spoedig contact op.</span>';
-      this.elements.form.reset();
-      setTimeout(() => { this.elements.feedback.innerHTML = ''; }, 5000);
-    } else {
-      this.elements.feedback.innerHTML = '<span style="color: #ef4444;">Vul alle verplichte velden in.</span>';
-    }
-  },
-  init() { if (this.elements.form) this.elements.form.addEventListener('submit', (e) => this.submit(e)); }
-};
 
 function initWhatsAppContact() {
   const whatsappBtn = document.getElementById('whatsappContactBtn');
@@ -2333,11 +2312,20 @@ document.getElementById('adminNextPageBtn')?.addEventListener('click', adminNext
 document.getElementById('selectAllVehiclesBtn')?.addEventListener('click', selectAllVehiclesOnPage);
 document.getElementById('bulkWhatsappBtn')?.addEventListener('click', sendBulkWhatsApp);
 document.getElementById('bulkWhatsappBarBtn')?.addEventListener('click', sendBulkWhatsApp);
-
+function initMenuGrid() {
+  const items = document.querySelectorAll('.menu-item');
+  items.forEach(item => {
+    item.addEventListener('click', () => {
+      const target = item.getAttribute('data-target');
+      if (target) {
+        scrollToSection(target);
+      }
+    });
+  });
+}
 function initApp() {
   Modal.init();
   Admin.init();
-  ContactForm.init();
   initMenuGrid();
   initWhatsAppContact();
   initAdminForm();
@@ -2357,5 +2345,73 @@ function initApp() {
 }
 initApp();
 </script>
+<!-- ============================================================ -->
+<!-- SUPABASE (REAL DATABASE CONNECTION) -->
+<!-- ============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const { createClient } = supabase;
+const supabaseClient = createClient(
+  "https://lhikxiusnhpkfjbdbbjc.supabase.co",
+  "sb_publishable_MoyW7wBJzwf-7oFEmesQTw_QvQX4JKL"
+);
+</script>
+
+<!-- ============================================================ -->
+<!-- 🔥 CONTACT FORM → SUPABASE (OVERRIDES OLD VERSION) -->
+<!-- ============================================================ -->
+<script>
+const ContactFormSupabase = {
+  elements: { 
+    form: document.getElementById('contactForm'), 
+    feedback: document.getElementById('formFeedback') 
+  },
+
+  sanitize(input) {
+    return input.replace(/[<>]/g, "");
+  },
+
+  async submit(e) {
+    e.preventDefault();
+
+    const name = this.sanitize(document.getElementById('name')?.value || "");
+    const email = this.sanitize(document.getElementById('email')?.value || "");
+    const phone = this.sanitize(document.getElementById('phone')?.value || "");
+    const subject = this.sanitize(document.getElementById('subject')?.value || "");
+    const message = this.sanitize(document.getElementById('message')?.value || "");
+
+    if (!name || !email || !message) {
+      this.elements.feedback.innerHTML = '<span style="color:#ef4444;">Vul alle verplichte velden in.</span>';
+      return;
+    }
+
+    this.elements.feedback.innerHTML = "⏳ Versturen...";
+
+    try {
+      const { error } = await supabaseClient
+        .from('contacts')
+        .insert([{ name, email, phone, subject, message }]);
+
+      if (error) throw error;
+
+      this.elements.feedback.innerHTML = '<span style="color:#10b981;">✅ Bericht opgeslagen!</span>';
+      this.elements.form.reset();
+
+    } catch (err) {
+      console.error(err);
+      this.elements.feedback.innerHTML =
+        '<span style="color:#ef4444;">❌ Fout. Gebruik WhatsApp.</span>';
+    }
+  },
+
+  init() {
+    this.elements.form?.addEventListener('submit', (e) => this.submit(e));
+  }
+};
+
+ContactFormSupabase.init();
+</script>
+
 </body>
 </html>
