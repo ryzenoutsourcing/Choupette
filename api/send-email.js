@@ -9,14 +9,14 @@ export default async function handler(req, res) {
     // =========================
     // 1. EMAIL TO YOU (ADMIN)
     // =========================
-    await fetch("https://api.resend.com/emails", {
+    const adminRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        from: "Choupette <ryzenoutsourcing@gmail.com>",
+        from: "onboarding@resend.dev",
         to: ["ryzenoutsourcing@gmail.com"],
         subject: `🚗 Nieuwe aanvraag / Nouvelle demande - ${name}`,
         html: `
@@ -44,14 +44,14 @@ export default async function handler(req, res) {
     const adminData = await adminRes.json();
 
 if (!adminRes.ok) {
-  console.error("Admin email failed:", adminData);
+  console.error(adminData);
   throw new Error("Admin email failed");
 }
 
     // =========================
     // 2. EMAIL TO CLIENT
     // =========================
-    await fetch("https://api.resend.com/emails", {
+    const clientRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
@@ -86,11 +86,11 @@ if (!adminRes.ok) {
         `
       })
     });
-    const adminData = await adminRes.json();
+   const clientData = await clientRes.json();
 
-if (!adminRes.ok) {
-  console.error("Admin email failed:", adminData);
-  throw new Error("Admin email failed");
+if (!clientRes.ok) {
+  console.error(clientData);
+  throw new Error("Client email failed");
 }
 
     return res.status(200).json({ success: true });
