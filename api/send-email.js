@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { name, email, message } = req.body;
+   const { name, email, phone, subject, message } = req.body;
 
     // =========================
     // 1. EMAIL TO YOU (ADMIN)
@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        from: "Choupette <onboarding@resend.dev>",
+        from: "Choupette <ryzenoutsourcing@gmail.com>",
         to: ["ryzenoutsourcing@gmail.com"],
         subject: `🚗 Nieuwe aanvraag / Nouvelle demande - ${name}`,
         html: `
@@ -41,6 +41,12 @@ export default async function handler(req, res) {
         `
       })
     });
+    const adminData = await adminRes.json();
+
+if (!adminRes.ok) {
+  console.error("Admin email failed:", adminData);
+  throw new Error("Admin email failed");
+}
 
     // =========================
     // 2. EMAIL TO CLIENT
@@ -52,7 +58,7 @@ export default async function handler(req, res) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        from: "Choupette <onboarding@resend.dev>",
+        from: "Choupette <ryzenoutsourcing@gmail.com>",
         to: [email],
         subject: "✅ Wij hebben uw aanvraag ontvangen / Nous avons reçu votre demande",
         html: `
@@ -80,6 +86,12 @@ export default async function handler(req, res) {
         `
       })
     });
+    const adminData = await adminRes.json();
+
+if (!adminRes.ok) {
+  console.error("Admin email failed:", adminData);
+  throw new Error("Admin email failed");
+}
 
     return res.status(200).json({ success: true });
 
