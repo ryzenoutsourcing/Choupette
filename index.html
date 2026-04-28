@@ -2393,6 +2393,15 @@ const ContactFormSupabase = {
 
     try {
       // 1. Save to Supabase
+      const { data: existing } = await supabaseClient
+  .from('contacts')
+  .select('*')
+  .eq('email', email)
+  .eq('message', message);
+
+if (existing.length > 0) {
+  throw new Error("Duplicate submission");
+}
       const { error } = await supabaseClient
         .from('contacts')
         .insert([{ name, email, phone, subject, message }]);
