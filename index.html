@@ -2375,61 +2375,50 @@ const ContactFormSupabase = {
     return input.replace(/[<>]/g, "");
   },
 
-async submit(e) {
-  e.preventDefault();
+  async submit(e) {
+    e.preventDefault();
 
-  const name = this.sanitize(document.getElementById('name')?.value || "");
-  const email = this.sanitize(document.getElementById('email')?.value || "");
-  const phone = this.sanitize(document.getElementById('phone')?.value || "");
-  const subject = this.sanitize(document.getElementById('subject')?.value || "");
-  const message = this.sanitize(document.getElementById('message')?.value || "");
+    const name = this.sanitize(document.getElementById('name')?.value || "");
+    const email = this.sanitize(document.getElementById('email')?.value || "");
+    const phone = this.sanitize(document.getElementById('phone')?.value || "");
+    const subject = this.sanitize(document.getElementById('subject')?.value || "");
+    const message = this.sanitize(document.getElementById('message')?.value || "");
 
-  if (!name || !email || !message) {
-    this.elements.feedback.innerHTML = '<span style="color:#ef4444;">Vul alle verplichte velden in.</span>';
-    return;
-  }
+    if (!name || !email || !message) {
+      this.elements.feedback.innerHTML = '<span style="color:#ef4444;">Vul alle verplichte velden in.</span>';
+      return;
+    }
 
-  this.elements.feedback.innerHTML = "⏳ Versturen...";
+    this.elements.feedback.innerHTML = "⏳ Versturen...";
 
-  try {
-    // ✅ 1. SAVE TO SUPABASE
-    const { error: dbError } = await supabaseClient
-      .from('contacts')
-      .insert([{ name, email, phone, subject, message }]);
+    try {
+      // 1. Save to Supabase
+      const { error } = await supabaseClient
+        .from('contacts')
+        .insert([{ name, email, phone, subject, message }]);
 
-    if (dbError) throw dbError;
+      if (error) throw error;
 
-    // ✅ 2. SEND EMAIL
-const res = await fetch("/api/send-email", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
+      // 2. Send email via API
+      const res = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, phone, subject, message })
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Email failed");
+
+      // SUCCESS
+      this.elements.feedback.innerHTML = '<span style="color:#10b981;">✅ Bericht verzonden!</span>';
+      this.elements.form.reset();
+
+    } catch (err) {
+      console.error("ERROR:", err);
+      this.elements.feedback.innerHTML =
+        '<span style="color:#ef4444;">❌ Fout. Gebruik WhatsApp.</span>';
+    }
   },
- body: JSON.stringify({
-  name,
-  email,
-  phone,
-  subject,
-  message
-})
-});
-
-    const data = await res.json();
-    console.log("Resend response:", data);
-
-    if (!res.ok) throw new Error("Email failed");
-
-    // ✅ SUCCESS
-    this.elements.feedback.innerHTML = '<span style="color:#10b981;">✅ Bericht verzonden!</span>';
-    this.elements.form.reset();
-
-  } catch (err) {
-    console.error("ERROR:", err);
-
-    this.elements.feedback.innerHTML =
-      '<span style="color:#ef4444;">❌ Fout. Gebruik WhatsApp.</span>';
-  }
-},
 
   init() {
     this.elements.form?.addEventListener('submit', (e) => this.submit(e));
