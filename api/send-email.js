@@ -4,7 +4,13 @@ export default async function handler(req, res) {
   }
 
   try {
-   const { name, email, phone, subject, message } = req.body;
+   const { name, email, phone, subject, message } = req.body || {};
+    if (!email || !email.includes("@")) {
+  return res.status(400).json({ error: "Invalid email" });
+}
+if (!name || !message) {
+  return res.status(400).json({ error: "Missing required fields" });
+}
 
     // =========================
     // 1. EMAIL TO YOU (ADMIN)
@@ -16,7 +22,7 @@ export default async function handler(req, res) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        from: "onboarding@resend.dev",
+        from: "Choupette <onboarding@resend.dev>",
         to: ["ryzenoutsourcing@gmail.com"],
         subject: `🚗 Nieuwe aanvraag / Nouvelle demande - ${name}`,
         html: `
@@ -45,7 +51,7 @@ export default async function handler(req, res) {
 
 if (!adminRes.ok) {
   console.error(adminData);
-  throw new Error("Admin email failed");
+  throw new Error(JSON.stringify(adminData));
 }
 
     // =========================
@@ -58,7 +64,7 @@ if (!adminRes.ok) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        from: "onboarding@resend.dev",
+        from: "Choupette <onboarding@resend.dev>",
         to: [email],
         subject: "✅ Wij hebben uw aanvraag ontvangen / Nous avons reçu votre demande",
         html: `
@@ -90,7 +96,7 @@ if (!adminRes.ok) {
 
 if (!clientRes.ok) {
   console.error(clientData);
-  throw new Error("Client email failed");
+  throw new Error(JSON.stringify(clientData));
 }
 
     return res.status(200).json({ success: true });
@@ -99,3 +105,4 @@ if (!clientRes.ok) {
     return res.status(500).json({ error: err.message });
   }
 }
+
