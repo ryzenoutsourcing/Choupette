@@ -58,7 +58,7 @@ if (!adminRes.ok) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        from: "Choupette <ryzenoutsourcing@gmail.com>",
+        from: "onboarding@resend.dev",
         to: [email],
         subject: "✅ Wij hebben uw aanvraag ontvangen / Nous avons reçu votre demande",
         html: `
